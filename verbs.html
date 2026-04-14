@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hayashi — 動詞變化完全攻略</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="theme-color" content="#1E293B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFFBEB;--bg2:#fff;--sidebar:#1E293B;--tx:#0F172A;--tx2:#64748B;--ac:#D97706;--ac2:#2563EB;--bd:#FAEEE1;--sh:0 1px 3px rgba(0,0,0,.05);--sh2:0 4px 16px rgba(0,0,0,.08);--r:10px;--hh:56px}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--hh) + 24px)}
+body{font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Noto Sans TC","PingFang TC",-apple-system,sans-serif;background:var(--bg);color:var(--tx);line-height:1.7;font-size:15px}
+
+/* Header */
+.hd{position:fixed;top:0;left:0;right:0;height:var(--hh);background:var(--sidebar);display:flex;align-items:center;padding:0 20px;z-index:100;gap:12px}
+.hd h1{color:#fff;font-size:16px;font-family:"Noto Serif JP",serif;font-weight:700;white-space:nowrap}
+.hd h1 span{color:var(--ac)}
+.hd a.back{color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;padding:4px 12px;border:1px solid rgba(255,255,255,.2);border-radius:6px;transition:.2s;white-space:nowrap}
+.hd a.back:hover{color:#fff;border-color:var(--ac)}
+
+/* Nav pills */
+.nav-pills{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.nav-pills a{color:rgba(255,255,255,.5);text-decoration:none;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:600;transition:.2s;white-space:nowrap}
+.nav-pills a:hover,.nav-pills a.on{background:rgba(255,255,255,.1);color:#fff}
+
+/* Main */
+.mn{max-width:960px;margin:0 auto;padding:calc(var(--hh) + 24px) 24px 60px}
+
+/* Intro hero */
+.intro{background:linear-gradient(135deg,#1E40AF,#1E293B);color:#fff;border-radius:var(--r);padding:28px 32px;margin-bottom:32px}
+.intro h2{font-family:"Noto Serif JP",serif;font-size:22px;margin-bottom:6px}
+.intro p{color:rgba(255,255,255,.65);font-size:13px;line-height:1.8}
+
+/* Sections */
+.sec{margin-bottom:40px}
+.sec>h2{font-family:"Noto Serif JP",serif;font-size:18px;font-weight:700;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--ac);display:flex;align-items:center;gap:8px}
+.sec>h2 .icon{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;background:var(--ac);color:#fff}
+
+/* Cards */
+.card{background:var(--bg2);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:12px;overflow:hidden;border:1px solid var(--bd);transition:.2s}
+.card:hover{box-shadow:var(--sh2)}
+.card-h{padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:10px;user-select:none;transition:background .15s}
+.card-h:hover{background:var(--bg)}
+.card-h .tag{background:var(--ac2);color:#fff;min-width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.card-h .tag.g1{background:#059669}
+.card-h .tag.g2{background:var(--ac2)}
+.card-h .tag.g3{background:#DC2626}
+.card-h .title{font-family:"Noto Serif JP",serif;font-size:15px;font-weight:700;flex:1}
+.card-h .arr{width:18px;height:18px;transition:.3s;stroke:#aaa;flex-shrink:0}
+.card.open .arr{transform:rotate(180deg)}
+.card-b{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.card.open .card-b{max-height:8000px}
+.card-x{padding:4px 18px 18px;border-top:1px solid var(--bd)}
+
+/* Tip box */
+.tip{background:#FEF3C7;border-radius:7px;padding:10px 14px;margin:12px 0;font-size:13px;color:#92400E;border-left:3px solid var(--ac);line-height:1.8}
+.tip strong{color:#B45309}
+
+/* Danger box */
+.danger{background:#FEE2E2;border-radius:7px;padding:10px 14px;margin:12px 0;font-size:13px;color:#991B1B;border-left:3px solid #DC2626;line-height:1.8}
+
+/* Info box */
+.info{background:#DBEAFE;border-radius:7px;padding:10px 14px;margin:12px 0;font-size:13px;color:#1E40AF;border-left:3px solid var(--ac2);line-height:1.8}
+
+/* Tables */
+.tbl-wrap{overflow-x:auto;margin:12px 0;border-radius:8px;border:1px solid var(--bd)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--sidebar);color:#fff;padding:8px 12px;text-align:left;font-size:12px;font-weight:600;white-space:nowrap;position:sticky;top:0}
+td{padding:7px 12px;border-bottom:1px solid var(--bd);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#FEF9E7}
+td.vb{font-family:"Noto Serif JP",serif;font-weight:700;color:var(--ac2)}
+td.hl{color:#B45309;font-weight:600}
+.tbl-wrap.sticky-col td:first-child,
+.tbl-wrap.sticky-col th:first-child{position:sticky;left:0;z-index:2;background:inherit}
+.tbl-wrap.sticky-col th:first-child{background:var(--sidebar);z-index:3}
+.tbl-wrap.sticky-col tr:hover td:first-child{background:#FEF9E7}
+
+/* Te-form color coding */
+.te-rule{display:inline-block;padding:3px 10px;border-radius:16px;font-size:12px;font-weight:600;margin:3px 4px 3px 0}
+.te-ite{background:#DBEAFE;color:#1E40AF}
+.te-ide{background:#E0E7FF;color:#3730A3}
+.te-shite{background:#FEF3C7;color:#92400E}
+.te-nde{background:#D1FAE5;color:#065F46}
+.te-tte{background:#FCE7F3;color:#9D174D}
+
+/* Speak button */
+.spk{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;cursor:pointer;border:none;background:none;opacity:.4;transition:.2s;vertical-align:middle;padding:0;-webkit-tap-highlight-color:transparent}
+.spk:hover,.spk:active{opacity:1}
+.spk svg{width:16px;height:16px;stroke:var(--ac2);fill:none;stroke-width:2}
+
+/* Quiz section */
+.quiz-panel{background:var(--bg2);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--bd);padding:24px;margin:16px 0}
+.quiz-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.quiz-controls select,.quiz-controls button{padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;border:1px solid var(--bd);background:#fff;transition:.2s}
+.quiz-controls button{background:var(--ac2);color:#fff;border-color:var(--ac2);font-weight:600}
+.quiz-controls button:hover{opacity:.9}
+.quiz-controls button.secondary{background:#fff;color:var(--tx);border-color:var(--bd)}
+.quiz-controls button.secondary:hover{border-color:var(--ac)}
+.quiz-area{min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
+.quiz-prompt{font-family:"Noto Serif JP",serif;font-size:28px;font-weight:700;margin-bottom:6px}
+.quiz-target{font-size:16px;color:var(--ac2);font-weight:600;margin-bottom:20px}
+.quiz-input{font-size:18px;padding:10px 18px;border:2px solid var(--bd);border-radius:8px;text-align:center;width:260px;max-width:100%;font-family:"Noto Sans JP",sans-serif;transition:.2s}
+.quiz-input:focus{outline:none;border-color:var(--ac2)}
+.quiz-input.correct{border-color:#059669;background:#D1FAE5}
+.quiz-input.wrong{border-color:#DC2626;background:#FEE2E2}
+.quiz-answer{font-size:16px;margin-top:12px;font-weight:600;min-height:24px}
+.quiz-answer.correct{color:#059669}
+.quiz-answer.wrong{color:#DC2626}
+.quiz-score{font-size:14px;color:var(--tx2);margin-bottom:16px}
+.quiz-next{margin-top:16px;padding:8px 24px;background:var(--ac);color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;display:none}
+.quiz-next:hover{opacity:.9}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:400px;margin-top:8px}
+.quiz-opt{padding:12px;border:2px solid var(--bd);border-radius:8px;background:#fff;cursor:pointer;font-size:15px;font-family:"Noto Sans JP",sans-serif;transition:.15s;text-align:center}
+.quiz-opt:hover{border-color:var(--ac2);background:#EFF6FF}
+.quiz-opt.correct{border-color:#059669;background:#D1FAE5}
+.quiz-opt.wrong{border-color:#DC2626;background:#FEE2E2}
+.quiz-opt.disabled{pointer-events:none}
+.quiz-mode-toggle{display:flex;gap:2px;background:#f1f5f9;border-radius:6px;padding:2px;margin-bottom:12px}
+.quiz-mode-toggle button{background:none;border:none;padding:5px 14px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;color:var(--tx2);transition:.2s}
+.quiz-mode-toggle button.on{background:#fff;color:var(--tx);box-shadow:var(--sh)}
+
+/* Pairs table */
+.pair-row{display:grid;grid-template-columns:1fr 20px 1fr;gap:0;align-items:center;padding:8px 14px;border-bottom:1px solid var(--bd)}
+.pair-row:last-child{border-bottom:none}
+.pair-row:hover{background:#FEF9E7}
+.pair-label{font-size:13px}
+.pair-label .kanji{font-family:"Noto Serif JP",serif;font-weight:700;font-size:15px}
+.pair-label .reading{font-size:11px;color:var(--ac2)}
+.pair-label .meaning{font-size:11px;color:var(--tx2)}
+.pair-arrow{text-align:center;color:var(--tx2);font-size:14px}
+.pair-header{display:grid;grid-template-columns:1fr 20px 1fr;gap:0;padding:8px 14px;background:var(--sidebar);color:#fff;font-size:12px;font-weight:600;border-radius:8px 8px 0 0}
+
+/* Scroll to top */
+.btt{position:fixed;bottom:20px;right:20px;width:44px;height:44px;border-radius:50%;background:var(--ac);color:#fff;border:none;cursor:pointer;font-size:18px;box-shadow:0 2px 8px rgba(217,119,6,.3);opacity:0;pointer-events:none;transition:.3s;z-index:150;display:flex;align-items:center;justify-content:center}
+.btt.show{opacity:1;pointer-events:auto}
+.btt:hover{transform:scale(1.05)}
+
+/* Footer */
+.ft{padding:20px;text-align:center;color:var(--tx2);font-size:11px;border-top:1px solid var(--bd)}
+.ft a{color:var(--ac2);text-decoration:none}
+
+/* Mnemonic */
+.mnemonic{background:linear-gradient(135deg,#FEF3C7,#FDE68A);border-radius:10px;padding:18px 22px;margin:16px 0;border:2px solid var(--ac);font-size:15px;line-height:2}
+.mnemonic .big{font-size:20px;font-weight:700;color:#B45309;font-family:"Noto Serif JP",serif}
+
+/* Responsive */
+@media(max-width:768px){
+  .mn{padding:calc(var(--hh) + 12px) 12px 60px}
+  .intro{padding:18px;margin-bottom:20px}
+  .intro h2{font-size:17px}
+  .card-x{padding:4px 12px 14px}
+  .quiz-prompt{font-size:22px}
+  .quiz-options{grid-template-columns:1fr 1fr}
+  table{font-size:12px}
+  th,td{padding:5px 8px}
+  .nav-pills{display:none}
+  .hd{gap:8px}
+  .pair-row{grid-template-columns:1fr 16px 1fr;padding:6px 10px}
+}
+@media(max-width:480px){
+  .hd h1{font-size:14px}
+  .quiz-options{grid-template-columns:1fr}
+  .quiz-input{width:100%}
+}
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <a href="index.html" class="back">&#8592; 首頁</a>
+  <h1>hayashi<span>動詞變化</span></h1>
+  <nav class="nav-pills">
+    <a href="#groups" class="on">分類</a>
+    <a href="#conjugation">變化表</a>
+    <a href="#te-form">て形</a>
+    <a href="#quiz">練習</a>
+    <a href="#pairs">自他動詞</a>
+  </nav>
+</header>
+
+<main class="mn">
+
+<!-- Hero -->
+<div class="intro">
+  <h2>動詞變化完全攻略</h2>
+  <p>日語動詞變化是最重要也最令人頭痛的文法基礎。本頁涵蓋三類動詞的所有變化形、て形音變規則、陷阱動詞列表，以及互動練習工具。掌握這些，N2 文法就有了穩固的抓手。</p>
+</div>
+
+<!-- ===== Section 1: 動詞分類 ===== -->
+<section class="sec" id="groups">
+  <h2><span class="icon">1</span> 動詞分類（三大類）</h2>
+
+  <!-- Group 2 ichidan -->
+  <div class="card open" id="card-ichidan">
+    <div class="card-h" onclick="toggleCard('card-ichidan')">
+      <span class="tag g2">II</span>
+      <span class="title">一段動詞（Group 2 / ichidan / 上一段・下一段）</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="tip"><strong>辨別規則：</strong>字尾一定是「る」，且「る」前面的假名在「い段」或「え段」（i/e 母音行）。</div>
+      <p>變化方式最簡單：<strong>去掉「る」</strong>，直接加上各種語尾。</p>
+      <table style="margin-top:10px"><tr><th>動詞</th><th>去る</th><th>ます形</th><th>ない形</th></tr>
+      <tr><td class="vb">食べる <button class="spk" onclick="speak('食べる')"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></button></td><td>食べ</td><td>食べます</td><td>食べない</td></tr>
+      <tr><td class="vb">見る <button class="spk" onclick="speak('見る')"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></button></td><td>見</td><td>見ます</td><td>見ない</td></tr>
+      <tr><td class="vb">起きる <button class="spk" onclick="speak('起きる')"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></button></td><td>起き</td><td>起きます</td><td>起きない</td></tr>
+      <tr><td class="vb">教える <button class="spk" onclick="speak('教える')"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></button></td><td>教え</td><td>教えます</td><td>教えない</td></tr>
+      </table>
+    </div></div>
+  </div>
+
+  <!-- Group 1 godan -->
+  <div class="card" id="card-godan">
+    <div class="card-h" onclick="toggleCard('card-godan')">
+      <span class="tag g1">I</span>
+      <span class="title">五段動詞（Group 1 / godan）</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="tip"><strong>辨別規則：</strong>字尾不是「る」的動詞，或者字尾是「る」但前面不在い段/え段。也包含所有<strong>陷阱動詞</strong>。</div>
+      <p>五段動詞的語幹最後一個假名會在「あいうえお」五段之間<strong>變化</strong>（所以叫五段）。</p>
+      <div class="info">
+        <strong>五段子音行對應：</strong><br>
+        く行：か き <u>く</u> け こ ｜ ぐ行：が ぎ <u>ぐ</u> げ ご<br>
+        す行：さ し <u>す</u> せ そ ｜ つ行：た ち <u>つ</u> て と<br>
+        ぬ行：な に <u>ぬ</u> ね の ｜ ぶ行：ば び <u>ぶ</u> べ ぼ<br>
+        む行：ま み <u>む</u> め も ｜ る行：ら り <u>る</u> れ ろ<br>
+        う行：（わ） い <u>う</u> え お
+      </div>
+      <table style="margin-top:10px"><tr><th>動詞</th><th>行</th><th>ます形 (い段)</th><th>ない形 (あ段)</th></tr>
+      <tr><td class="vb">書く <button class="spk" onclick="speak('書く')"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></button></td><td>か行</td><td>書きます</td><td>書かない</td></tr>
+      <tr><td class="vb">飲む <button class="spk" onclick="speak('飲む')"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></button></td><td>ま行</td><td>飲みます</td><td>飲まない</td></tr>
+      <tr><td class="vb">話す <button class="spk" onclick="speak('話す')"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></button></td><td>さ行</td><td>話します</td><td>話さない</td></tr>
+      <tr><td class="vb">買う <button class="spk" onclick="speak('買う')"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></button></td><td>わ行</td><td>買います</td><td>買わない</td></tr>
+      <tr><td class="vb">待つ <button class="spk" onclick="speak('待つ')"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></button></td><td>た行</td><td>待ちます</td><td>待たない</td></tr>
+      <tr><td class="vb">死ぬ <button class="spk" onclick="speak('死ぬ')"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></button></td><td>な行</td><td>死にます</td><td>死なない</td></tr>
+      <tr><td class="vb">遊ぶ <button class="spk" onclick="speak('遊ぶ')"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></button></td><td>ば行</td><td>遊びます</td><td>遊ばない</td></tr>
+      <tr><td class="vb">走る <button class="spk" onclick="speak('走る')"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></button></td><td>ら行</td><td>走ります</td><td>走らない</td></tr>
+      <tr><td class="vb">泳ぐ <button class="spk" onclick="speak('泳ぐ')"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></button></td><td>が行</td><td>泳ぎます</td><td>泳がない</td></tr>
+      </table>
+    </div></div>
+  </div>
+
+  <!-- Group 3 irregular -->
+  <div class="card" id="card-irreg">
+    <div class="card-h" onclick="toggleCard('card-irreg')">
+      <span class="tag g3">III</span>
+      <span class="title">不規則動詞（Group 3 / irregular）</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="tip">日語只有<strong>兩個</strong>不規則動詞：<strong>する</strong>（做）和<strong>来る（くる）</strong>（來）。但「する」可以和名詞結合（勉強する、運動する），所以實際上數量很多。</div>
+      <table style="margin-top:10px"><tr><th>動詞</th><th>ます形</th><th>ない形</th><th>て形</th><th>た形</th></tr>
+      <tr><td class="vb">する <button class="spk" onclick="speak('する')"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></button></td><td>します</td><td>しない</td><td>して</td><td>した</td></tr>
+      <tr><td class="vb">来る <button class="spk" onclick="speak('来る')"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></button></td><td>来ます（きます）</td><td>来ない（こない）</td><td>来て（きて）</td><td>来た（きた）</td></tr>
+      </table>
+      <div class="danger" style="margin-top:12px">
+        <strong>注意「来る」的讀音變化！</strong><br>
+        辞書形：<strong>くる</strong> ／ ます形：<strong>きます</strong> ／ ない形：<strong>こない</strong> ／ て形：<strong>きて</strong><br>
+        母音在 く・き・こ 之間切換，這就是不規則的地方。
+      </div>
+    </div></div>
+  </div>
+
+  <!-- Trap verbs -->
+  <div class="card" id="card-trap">
+    <div class="card-h" onclick="toggleCard('card-trap')">
+      <span class="tag" style="background:#DC2626">!</span>
+      <span class="title">陷阱動詞 — 看起來像一段、其實是五段！</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="danger">
+        <strong>這些動詞字尾是「-いる」或「-える」，看起來像一段動詞，但實際上是五段動詞！</strong>只能靠記憶來分辨。
+      </div>
+      <table style="margin-top:10px"><tr><th>動詞</th><th>讀音</th><th>意思</th><th>ます形（五段！）</th></tr>
+      <tr><td class="vb">帰る</td><td>かえる</td><td>回去</td><td>帰<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">知る</td><td>しる</td><td>知道</td><td>知<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">切る</td><td>きる</td><td>切</td><td>切<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">走る</td><td>はしる</td><td>跑</td><td>走<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">入る</td><td>はいる</td><td>進入</td><td>入<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">要る</td><td>いる</td><td>需要</td><td>要<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">滑る</td><td>すべる</td><td>滑</td><td>滑<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">握る</td><td>にぎる</td><td>握</td><td>握<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">混じる</td><td>まじる</td><td>混合</td><td>混じ<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">嘲る</td><td>あざける</td><td>嘲笑</td><td>嘲<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">焦る</td><td>あせる</td><td>焦急</td><td>焦<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">限る</td><td>かぎる</td><td>限定</td><td>限<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">蹴る</td><td>ける</td><td>踢</td><td>蹴<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">覆る</td><td>くつがえる</td><td>翻覆</td><td>覆<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">遮る</td><td>さえぎる</td><td>遮擋</td><td>遮<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">茂る</td><td>しげる</td><td>茂盛</td><td>茂<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">散る</td><td>ちる</td><td>凋落</td><td>散<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">照る</td><td>てる</td><td>照射</td><td>照<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">減る</td><td>へる</td><td>減少</td><td>減<strong>り</strong>ます</td></tr>
+      <tr><td class="vb">参る</td><td>まいる</td><td>去（謙讓）</td><td>参<strong>り</strong>ます</td></tr>
+      </table>
+      <div class="tip" style="margin-top:12px">
+        <strong>記憶訣竅：</strong>如果一個「〜いる/える」結尾的動詞，你不確定它是哪一類，最安全的方法就是查字典確認。常見的陷阱動詞就這些，背下來就好。
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===== Section 2: Complete Conjugation Table ===== -->
+<section class="sec" id="conjugation">
+  <h2><span class="icon">2</span> 動詞變化總表</h2>
+  <p style="color:var(--tx2);font-size:13px;margin-bottom:12px">點擊展開各變化形。表格可左右滾動。</p>
+
+  <!-- ます形 -->
+  <div class="card" id="card-masu">
+    <div class="card-h" onclick="toggleCard('card-masu')">
+      <span class="tag">丁</span>
+      <span class="title">ます形（禮貌形）</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="info"><strong>規則：</strong>一段＝去る＋ます ｜ 五段＝う段→い段＋ます ｜ する→します ｜ 来る→きます</div>
+      <div class="tbl-wrap sticky-col"><table>
+        <tr><th>辞書形</th><th>類</th><th>ます形</th><th>ません</th><th>ました</th><th>ませんでした</th></tr>
+        <tr><td class="vb">書く</td><td>五</td><td>書きます</td><td>書きません</td><td>書きました</td><td>書きませんでした</td></tr>
+        <tr><td class="vb">飲む</td><td>五</td><td>飲みます</td><td>飲みません</td><td>飲みました</td><td>飲みませんでした</td></tr>
+        <tr><td class="vb">話す</td><td>五</td><td>話します</td><td>話しません</td><td>話しました</td><td>話しませんでした</td></tr>
+        <tr><td class="vb">買う</td><td>五</td><td>買います</td><td>買いません</td><td>買いました</td><td>買いませんでした</td></tr>
+        <tr><td class="vb">待つ</td><td>五</td><td>待ちます</td><td>待ちません</td><td>待ちました</td><td>待ちませんでした</td></tr>
+        <tr><td class="vb">死ぬ</td><td>五</td><td>死にます</td><td>死にません</td><td>死にました</td><td>死にませんでした</td></tr>
+        <tr><td class="vb">遊ぶ</td><td>五</td><td>遊びます</td><td>遊びません</td><td>遊びました</td><td>遊びませんでした</td></tr>
+        <tr><td class="vb">走る</td><td>五</td><td>走ります</td><td>走りません</td><td>走りました</td><td>走りませんでした</td></tr>
+        <tr><td class="vb">泳ぐ</td><td>五</td><td>泳ぎます</td><td>泳ぎません</td><td>泳ぎました</td><td>泳ぎませんでした</td></tr>
+        <tr><td class="vb">食べる</td><td>一</td><td>食べます</td><td>食べません</td><td>食べました</td><td>食べませんでした</td></tr>
+        <tr><td class="vb">見る</td><td>一</td><td>見ます</td><td>見ません</td><td>見ました</td><td>見ませんでした</td></tr>
+        <tr><td class="vb">起きる</td><td>一</td><td>起きます</td><td>起きません</td><td>起きました</td><td>起きませんでした</td></tr>
+        <tr><td class="vb">教える</td><td>一</td><td>教えます</td><td>教えません</td><td>教えました</td><td>教えませんでした</td></tr>
+        <tr><td class="vb">する</td><td>不</td><td>します</td><td>しません</td><td>しました</td><td>しませんでした</td></tr>
+        <tr><td class="vb">来る</td><td>不</td><td>来ます</td><td>来ません</td><td>来ました</td><td>来ませんでした</td></tr>
+      </table></div>
+    </div></div>
+  </div>
+
+  <!-- て形 / た形 -->
+  <div class="card" id="card-te-ta">
+    <div class="card-h" onclick="toggleCard('card-te-ta')">
+      <span class="tag">て</span>
+      <span class="title">て形 ＆ た形（連接 / 過去）</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="info"><strong>規則：</strong>一段＝去る＋て/た ｜ 五段＝音便規則（見<a href="#te-form">て形專區</a>）｜ する→して/した ｜ 来る→きて/きた</div>
+      <div class="tbl-wrap sticky-col"><table>
+        <tr><th>辞書形</th><th>類</th><th>て形</th><th>た形</th></tr>
+        <tr><td class="vb">書く</td><td>五</td><td class="hl">書いて</td><td>書いた</td></tr>
+        <tr><td class="vb">泳ぐ</td><td>五</td><td class="hl">泳いで</td><td>泳いだ</td></tr>
+        <tr><td class="vb">話す</td><td>五</td><td class="hl">話して</td><td>話した</td></tr>
+        <tr><td class="vb">飲む</td><td>五</td><td class="hl">飲んで</td><td>飲んだ</td></tr>
+        <tr><td class="vb">遊ぶ</td><td>五</td><td class="hl">遊んで</td><td>遊んだ</td></tr>
+        <tr><td class="vb">死ぬ</td><td>五</td><td class="hl">死んで</td><td>死んだ</td></tr>
+        <tr><td class="vb">買う</td><td>五</td><td class="hl">買って</td><td>買った</td></tr>
+        <tr><td class="vb">待つ</td><td>五</td><td class="hl">待って</td><td>待った</td></tr>
+        <tr><td class="vb">走る</td><td>五</td><td class="hl">走って</td><td>走った</td></tr>
+        <tr><td class="vb">食べる</td><td>一</td><td class="hl">食べて</td><td>食べた</td></tr>
+        <tr><td class="vb">見る</td><td>一</td><td class="hl">見て</td><td>見た</td></tr>
+        <tr><td class="vb">起きる</td><td>一</td><td class="hl">起きて</td><td>起きた</td></tr>
+        <tr><td class="vb">教える</td><td>一</td><td class="hl">教えて</td><td>教えた</td></tr>
+        <tr><td class="vb">する</td><td>不</td><td class="hl">して</td><td>した</td></tr>
+        <tr><td class="vb">来る</td><td>不</td><td class="hl">来て（きて）</td><td>来た（きた）</td></tr>
+      </table></div>
+    </div></div>
+  </div>
+
+  <!-- ない形 -->
+  <div class="card" id="card-nai">
+    <div class="card-h" onclick="toggleCard('card-nai')">
+      <span class="tag">否</span>
+      <span class="title">ない形（否定形）</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="info"><strong>規則：</strong>一段＝去る＋ない ｜ 五段＝う段→あ段＋ない（う→わない 例外）｜ する→しない ｜ 来る→こない</div>
+      <div class="tbl-wrap sticky-col"><table>
+        <tr><th>辞書形</th><th>類</th><th>ない形</th><th>なかった</th></tr>
+        <tr><td class="vb">書く</td><td>五</td><td>書かない</td><td>書かなかった</td></tr>
+        <tr><td class="vb">飲む</td><td>五</td><td>飲まない</td><td>飲まなかった</td></tr>
+        <tr><td class="vb">話す</td><td>五</td><td>話さない</td><td>話さなかった</td></tr>
+        <tr><td class="vb">買う</td><td>五</td><td>買<strong>わ</strong>ない</td><td>買わなかった</td></tr>
+        <tr><td class="vb">待つ</td><td>五</td><td>待たない</td><td>待たなかった</td></tr>
+        <tr><td class="vb">死ぬ</td><td>五</td><td>死なない</td><td>死ななかった</td></tr>
+        <tr><td class="vb">遊ぶ</td><td>五</td><td>遊ばない</td><td>遊ばなかった</td></tr>
+        <tr><td class="vb">走る</td><td>五</td><td>走らない</td><td>走らなかった</td></tr>
+        <tr><td class="vb">泳ぐ</td><td>五</td><td>泳がない</td><td>泳がなかった</td></tr>
+        <tr><td class="vb">食べる</td><td>一</td><td>食べない</td><td>食べなかった</td></tr>
+        <tr><td class="vb">見る</td><td>一</td><td>見ない</td><td>見なかった</td></tr>
+        <tr><td class="vb">する</td><td>不</td><td>しない</td><td>しなかった</td></tr>
+        <tr><td class="vb">来る</td><td>不</td><td>来ない（こない）</td><td>来なかった（こなかった）</td></tr>
+      </table></div>
+    </div></div>
+  </div>
+
+  <!-- 意向形 -->
+  <div class="card" id="card-volitional">
+    <div class="card-h" onclick="toggleCard('card-volitional')">
+      <span class="tag">意</span>
+      <span class="title">意向形（volitional）〜よう</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="info"><strong>規則：</strong>一段＝去る＋よう ｜ 五段＝う段→お段＋う ｜ する→しよう ｜ 来る→こよう</div>
+      <div class="tbl-wrap sticky-col"><table>
+        <tr><th>辞書形</th><th>類</th><th>意向形</th><th>用法</th></tr>
+        <tr><td class="vb">書く</td><td>五</td><td>書こう</td><td rowspan="9">「～しよう」＝Let's ～ / I'll ～</td></tr>
+        <tr><td class="vb">飲む</td><td>五</td><td>飲もう</td></tr>
+        <tr><td class="vb">話す</td><td>五</td><td>話そう</td></tr>
+        <tr><td class="vb">買う</td><td>五</td><td>買おう</td></tr>
+        <tr><td class="vb">待つ</td><td>五</td><td>待とう</td></tr>
+        <tr><td class="vb">走る</td><td>五</td><td>走ろう</td></tr>
+        <tr><td class="vb">泳ぐ</td><td>五</td><td>泳ごう</td></tr>
+        <tr><td class="vb">遊ぶ</td><td>五</td><td>遊ぼう</td></tr>
+        <tr><td class="vb">死ぬ</td><td>五</td><td>死のう</td></tr>
+        <tr><td class="vb">食べる</td><td>一</td><td>食べよう</td><td rowspan="2"></td></tr>
+        <tr><td class="vb">見る</td><td>一</td><td>見よう</td></tr>
+        <tr><td class="vb">する</td><td>不</td><td>しよう</td><td></td></tr>
+        <tr><td class="vb">来る</td><td>不</td><td>来よう（こよう）</td><td></td></tr>
+      </table></div>
+    </div></div>
+  </div>
+
+  <!-- 可能形 -->
+  <div class="card" id="card-potential">
+    <div class="card-h" onclick="toggleCard('card-potential')">
+      <span class="tag">能</span>
+      <span class="title">可能形（potential）〜できる</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="info"><strong>規則：</strong>一段＝去る＋られる ｜ 五段＝う段→え段＋る ｜ する→できる ｜ 来る→来られる（こられる）<br>
+      <strong>注意：</strong>可能形本身變成一段動詞（-える/-られる 結尾）。口語中一段的「られる」常省略為「れる」（ら抜き言葉）。</div>
+      <div class="tbl-wrap sticky-col"><table>
+        <tr><th>辞書形</th><th>類</th><th>可能形</th><th>口語（ら抜き）</th></tr>
+        <tr><td class="vb">書く</td><td>五</td><td>書ける</td><td>-</td></tr>
+        <tr><td class="vb">飲む</td><td>五</td><td>飲める</td><td>-</td></tr>
+        <tr><td class="vb">話す</td><td>五</td><td>話せる</td><td>-</td></tr>
+        <tr><td class="vb">買う</td><td>五</td><td>買える</td><td>-</td></tr>
+        <tr><td class="vb">待つ</td><td>五</td><td>待てる</td><td>-</td></tr>
+        <tr><td class="vb">走る</td><td>五</td><td>走れる</td><td>-</td></tr>
+        <tr><td class="vb">泳ぐ</td><td>五</td><td>泳げる</td><td>-</td></tr>
+        <tr><td class="vb">食べる</td><td>一</td><td>食べられる</td><td>食べれる</td></tr>
+        <tr><td class="vb">見る</td><td>一</td><td>見られる</td><td>見れる</td></tr>
+        <tr><td class="vb">起きる</td><td>一</td><td>起きられる</td><td>起きれる</td></tr>
+        <tr><td class="vb">する</td><td>不</td><td>できる</td><td>-</td></tr>
+        <tr><td class="vb">来る</td><td>不</td><td>来られる（こられる）</td><td>来れる（これる）</td></tr>
+      </table></div>
+    </div></div>
+  </div>
+
+  <!-- 受身形 -->
+  <div class="card" id="card-passive">
+    <div class="card-h" onclick="toggleCard('card-passive')">
+      <span class="tag">受</span>
+      <span class="title">受身形（passive）〜れる/られる</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="info"><strong>規則：</strong>一段＝去る＋られる ｜ 五段＝う段→あ段＋れる ｜ する→される ｜ 来る→来られる（こられる）</div>
+      <div class="tbl-wrap sticky-col"><table>
+        <tr><th>辞書形</th><th>類</th><th>受身形</th></tr>
+        <tr><td class="vb">書く</td><td>五</td><td>書かれる</td></tr>
+        <tr><td class="vb">飲む</td><td>五</td><td>飲まれる</td></tr>
+        <tr><td class="vb">話す</td><td>五</td><td>話される</td></tr>
+        <tr><td class="vb">買う</td><td>五</td><td>買われる</td></tr>
+        <tr><td class="vb">待つ</td><td>五</td><td>待たれる</td></tr>
+        <tr><td class="vb">走る</td><td>五</td><td>走られる</td></tr>
+        <tr><td class="vb">泳ぐ</td><td>五</td><td>泳がれる</td></tr>
+        <tr><td class="vb">食べる</td><td>一</td><td>食べられる</td></tr>
+        <tr><td class="vb">見る</td><td>一</td><td>見られる</td></tr>
+        <tr><td class="vb">する</td><td>不</td><td>される</td></tr>
+        <tr><td class="vb">来る</td><td>不</td><td>来られる（こられる）</td></tr>
+      </table></div>
+      <div class="tip"><strong>注意：</strong>一段動詞的受身形和可能形長得一模一樣（都是〜られる），只能靠語境分辨！</div>
+    </div></div>
+  </div>
+
+  <!-- 使役形 -->
+  <div class="card" id="card-causative">
+    <div class="card-h" onclick="toggleCard('card-causative')">
+      <span class="tag">使</span>
+      <span class="title">使役形（causative）〜せる/させる</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="info"><strong>規則：</strong>一段＝去る＋させる ｜ 五段＝う段→あ段＋せる ｜ する→させる ｜ 来る→来させる（こさせる）</div>
+      <div class="tbl-wrap sticky-col"><table>
+        <tr><th>辞書形</th><th>類</th><th>使役形</th><th>意思</th></tr>
+        <tr><td class="vb">書く</td><td>五</td><td>書かせる</td><td>讓/叫（某人）寫</td></tr>
+        <tr><td class="vb">飲む</td><td>五</td><td>飲ませる</td><td>讓（某人）喝</td></tr>
+        <tr><td class="vb">話す</td><td>五</td><td>話させる</td><td>讓（某人）說</td></tr>
+        <tr><td class="vb">買う</td><td>五</td><td>買わせる</td><td>讓（某人）買</td></tr>
+        <tr><td class="vb">待つ</td><td>五</td><td>待たせる</td><td>讓（某人）等</td></tr>
+        <tr><td class="vb">走る</td><td>五</td><td>走らせる</td><td>讓（某人）跑</td></tr>
+        <tr><td class="vb">泳ぐ</td><td>五</td><td>泳がせる</td><td>讓（某人）游泳</td></tr>
+        <tr><td class="vb">食べる</td><td>一</td><td>食べさせる</td><td>讓（某人）吃</td></tr>
+        <tr><td class="vb">見る</td><td>一</td><td>見させる</td><td>讓（某人）看</td></tr>
+        <tr><td class="vb">する</td><td>不</td><td>させる</td><td>讓（某人）做</td></tr>
+        <tr><td class="vb">来る</td><td>不</td><td>来させる（こさせる）</td><td>讓（某人）來</td></tr>
+      </table></div>
+    </div></div>
+  </div>
+
+  <!-- 使役受身形 -->
+  <div class="card" id="card-causpass">
+    <div class="card-h" onclick="toggleCard('card-causpass')">
+      <span class="tag">雙</span>
+      <span class="title">使役受身形（causative-passive）</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="info"><strong>規則：</strong>使役形＋られる → 縮約：五段「〜あ段＋される」（口語常用短縮形）<br>
+      一段＝去る＋させられる ｜ する→させられる ｜ 来る→来させられる（こさせられる）</div>
+      <div class="tbl-wrap sticky-col"><table>
+        <tr><th>辞書形</th><th>類</th><th>使役受身形</th><th>短縮形（五段口語）</th></tr>
+        <tr><td class="vb">書く</td><td>五</td><td>書かせられる</td><td>書かされる</td></tr>
+        <tr><td class="vb">飲む</td><td>五</td><td>飲ませられる</td><td>飲まされる</td></tr>
+        <tr><td class="vb">話す</td><td>五</td><td>話させられる</td><td>-（す行不縮約）</td></tr>
+        <tr><td class="vb">買う</td><td>五</td><td>買わせられる</td><td>買わされる</td></tr>
+        <tr><td class="vb">待つ</td><td>五</td><td>待たせられる</td><td>待たされる</td></tr>
+        <tr><td class="vb">走る</td><td>五</td><td>走らせられる</td><td>走らされる</td></tr>
+        <tr><td class="vb">食べる</td><td>一</td><td>食べさせられる</td><td>-</td></tr>
+        <tr><td class="vb">見る</td><td>一</td><td>見させられる</td><td>-</td></tr>
+        <tr><td class="vb">する</td><td>不</td><td>させられる</td><td>-</td></tr>
+        <tr><td class="vb">来る</td><td>不</td><td>来させられる（こさせられる）</td><td>-</td></tr>
+      </table></div>
+      <div class="tip"><strong>語感：</strong>「被迫做某事」。例：宿題を<strong>書かされた</strong>＝（被老師）逼著寫了作業。</div>
+    </div></div>
+  </div>
+
+  <!-- 命令形 -->
+  <div class="card" id="card-imperative">
+    <div class="card-h" onclick="toggleCard('card-imperative')">
+      <span class="tag">令</span>
+      <span class="title">命令形（imperative）</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="info"><strong>規則：</strong>一段＝去る＋ろ ｜ 五段＝う段→え段 ｜ する→しろ/せよ ｜ 来る→来い（こい）</div>
+      <div class="tbl-wrap sticky-col"><table>
+        <tr><th>辞書形</th><th>類</th><th>命令形</th></tr>
+        <tr><td class="vb">書く</td><td>五</td><td>書け</td></tr>
+        <tr><td class="vb">飲む</td><td>五</td><td>飲め</td></tr>
+        <tr><td class="vb">話す</td><td>五</td><td>話せ</td></tr>
+        <tr><td class="vb">買う</td><td>五</td><td>買え</td></tr>
+        <tr><td class="vb">待つ</td><td>五</td><td>待て</td></tr>
+        <tr><td class="vb">走る</td><td>五</td><td>走れ</td></tr>
+        <tr><td class="vb">泳ぐ</td><td>五</td><td>泳げ</td></tr>
+        <tr><td class="vb">食べる</td><td>一</td><td>食べろ</td></tr>
+        <tr><td class="vb">見る</td><td>一</td><td>見ろ</td></tr>
+        <tr><td class="vb">する</td><td>不</td><td>しろ / せよ</td></tr>
+        <tr><td class="vb">来る</td><td>不</td><td>来い（こい）</td></tr>
+      </table></div>
+      <div class="danger"><strong>注意：</strong>命令形語氣非常強硬粗魯，日常會話中幾乎不用。多見於：體育教練指令、緊急場面、漫畫/動漫台詞。</div>
+    </div></div>
+  </div>
+
+  <!-- 条件形 / ば形 -->
+  <div class="card" id="card-conditional">
+    <div class="card-h" onclick="toggleCard('card-conditional')">
+      <span class="tag">条</span>
+      <span class="title">条件形 / ば形（conditional）</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="info"><strong>規則：</strong>一段＝去る＋れば ｜ 五段＝う段→え段＋ば ｜ する→すれば ｜ 来る→来れば（くれば）</div>
+      <div class="tbl-wrap sticky-col"><table>
+        <tr><th>辞書形</th><th>類</th><th>ば形</th><th>意思</th></tr>
+        <tr><td class="vb">書く</td><td>五</td><td>書けば</td><td>如果寫的話</td></tr>
+        <tr><td class="vb">飲む</td><td>五</td><td>飲めば</td><td>如果喝的話</td></tr>
+        <tr><td class="vb">話す</td><td>五</td><td>話せば</td><td>如果說的話</td></tr>
+        <tr><td class="vb">買う</td><td>五</td><td>買えば</td><td>如果買的話</td></tr>
+        <tr><td class="vb">待つ</td><td>五</td><td>待てば</td><td>如果等的話</td></tr>
+        <tr><td class="vb">走る</td><td>五</td><td>走れば</td><td>如果跑的話</td></tr>
+        <tr><td class="vb">泳ぐ</td><td>五</td><td>泳げば</td><td>如果游泳的話</td></tr>
+        <tr><td class="vb">食べる</td><td>一</td><td>食べれば</td><td>如果吃的話</td></tr>
+        <tr><td class="vb">見る</td><td>一</td><td>見れば</td><td>如果看的話</td></tr>
+        <tr><td class="vb">する</td><td>不</td><td>すれば</td><td>如果做的話</td></tr>
+        <tr><td class="vb">来る</td><td>不</td><td>来れば（くれば）</td><td>如果來的話</td></tr>
+      </table></div>
+    </div></div>
+  </div>
+
+  <!-- 禁止形 -->
+  <div class="card" id="card-prohibitive">
+    <div class="card-h" onclick="toggleCard('card-prohibitive')">
+      <span class="tag">禁</span>
+      <span class="title">禁止形（prohibitive）〜な</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="info"><strong>規則超簡單：</strong>辞書形＋な ← 所有動詞都一樣！</div>
+      <div class="tbl-wrap sticky-col"><table>
+        <tr><th>辞書形</th><th>禁止形</th><th>意思</th></tr>
+        <tr><td class="vb">書く</td><td>書くな</td><td>不准寫！</td></tr>
+        <tr><td class="vb">飲む</td><td>飲むな</td><td>不准喝！</td></tr>
+        <tr><td class="vb">食べる</td><td>食べるな</td><td>不准吃！</td></tr>
+        <tr><td class="vb">見る</td><td>見るな</td><td>不准看！</td></tr>
+        <tr><td class="vb">する</td><td>するな</td><td>不准做！</td></tr>
+        <tr><td class="vb">来る</td><td>来るな（くるな）</td><td>不准來！</td></tr>
+      </table></div>
+      <div class="danger"><strong>注意：</strong>和命令形一樣，禁止形語氣強硬。日常用「〜ないでください」更禮貌。</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===== Section 3: て形 Special Section ===== -->
+<section class="sec" id="te-form">
+  <h2><span class="icon">3</span> て形音變規則（最重要！）</h2>
+  <p style="color:var(--tx2);font-size:13px;margin-bottom:16px">て形是日語最常用的變化形之一，用於連接句子、請求、進行式等。五段動詞的て形有<strong>音便（おんびん）</strong>規則，必須牢記。</p>
+
+  <div class="card open" id="card-te-rules">
+    <div class="card-h" onclick="toggleCard('card-te-rules')">
+      <span class="tag" style="background:#B45309">核</span>
+      <span class="title">五段動詞 て形 五大音變規則</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div style="margin:12px 0">
+        <p style="margin-bottom:8px"><span class="te-rule te-ite">1. イ音便：く → いて</span></p>
+        <p style="font-size:14px;margin-bottom:4px">書<strong>く</strong> → 書<strong>いて</strong>、聞<strong>く</strong> → 聞<strong>いて</strong>、歩<strong>く</strong> → 歩<strong>いて</strong></p>
+        <div class="danger" style="margin:4px 0 16px"><strong>例外！</strong> 行く → 行<strong>って</strong>（不是行いて！這是唯一的例外）</div>
+
+        <p style="margin-bottom:8px"><span class="te-rule te-ide">2. イ音便（濁音）：ぐ → いで</span></p>
+        <p style="font-size:14px;margin-bottom:16px">泳<strong>ぐ</strong> → 泳<strong>いで</strong>、脱<strong>ぐ</strong> → 脱<strong>いで</strong>、急<strong>ぐ</strong> → 急<strong>いで</strong></p>
+
+        <p style="margin-bottom:8px"><span class="te-rule te-shite">3. す → して</span></p>
+        <p style="font-size:14px;margin-bottom:16px">話<strong>す</strong> → 話<strong>して</strong>、出<strong>す</strong> → 出<strong>して</strong>、消<strong>す</strong> → 消<strong>して</strong></p>
+
+        <p style="margin-bottom:8px"><span class="te-rule te-nde">4. 撥音便：む・ぶ・ぬ → んで</span></p>
+        <p style="font-size:14px;margin-bottom:16px">飲<strong>む</strong> → 飲<strong>んで</strong>、遊<strong>ぶ</strong> → 遊<strong>んで</strong>、死<strong>ぬ</strong> → 死<strong>んで</strong></p>
+
+        <p style="margin-bottom:8px"><span class="te-rule te-tte">5. 促音便：う・つ・る → って</span></p>
+        <p style="font-size:14px;margin-bottom:4px">買<strong>う</strong> → 買<strong>って</strong>、待<strong>つ</strong> → 待<strong>って</strong>、走<strong>る</strong> → 走<strong>って</strong></p>
+      </div>
+
+      <div class="tip"><strong>一段動詞和不規則動詞不需要音變：</strong><br>
+      一段：去る＋て → 食べて、見て、起きて<br>
+      不規則：する→して、来る→きて</div>
+    </div></div>
+  </div>
+
+  <!-- Mnemonic -->
+  <div class="card open" id="card-mnemonic">
+    <div class="card-h" onclick="toggleCard('card-mnemonic')">
+      <span class="tag" style="background:#B45309">記</span>
+      <span class="title">記憶口訣</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="mnemonic">
+        <span class="big">「一口氣記住て形！」</span><br><br>
+        <span class="te-rule te-ite">く → いて</span>
+        <span class="te-rule te-ide">ぐ → いで</span> ← 清音/濁音是一對<br>
+        <span class="te-rule te-shite">す → して</span> ← す就是し（同行）<br>
+        <span class="te-rule te-nde">む・ぶ・ぬ → んで</span> ← 嘴巴閉起來的音（m/b/n）變「ん」<br>
+        <span class="te-rule te-tte">う・つ・る → って</span> ← 其餘全部變「っ」促音<br><br>
+        <strong>口訣：</strong>「<span style="color:#B45309;font-size:17px">く・ぐ 一對，す 獨行，嘴閉（む・ぶ・ぬ）撥音，剩下促音</span>」<br><br>
+        <strong>日語歌訣（配「きらきら星」旋律）：</strong><br>
+        いて、いで、して、んで、って～<br>
+        く、ぐ、す、む・ぶ・ぬ、う・つ・る～
+      </div>
+
+      <div class="info" style="margin-top:12px">
+        <strong>た形和て形規則完全一樣！</strong>只需把「て→た」「で→だ」：<br>
+        書いて → 書い<strong>た</strong>、泳いで → 泳い<strong>だ</strong>、飲んで → 飲ん<strong>だ</strong>、買って → 買っ<strong>た</strong>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- Practice examples -->
+  <div class="card" id="card-te-practice">
+    <div class="card-h" onclick="toggleCard('card-te-practice')">
+      <span class="tag" style="background:#B45309">練</span>
+      <span class="title">て形練習例句</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="tbl-wrap"><table>
+        <tr><th>用法</th><th>例句</th><th>中文</th></tr>
+        <tr><td>請求</td><td class="vb">ちょっと<strong>待って</strong>ください。</td><td>請等一下。</td></tr>
+        <tr><td>進行式</td><td class="vb">今、本を<strong>読んで</strong>います。</td><td>現在正在看書。</td></tr>
+        <tr><td>連接</td><td class="vb">朝ごはんを<strong>食べて</strong>、学校に行きます。</td><td>吃完早餐去學校。</td></tr>
+        <tr><td>許可</td><td class="vb">ここで写真を<strong>撮って</strong>もいいですか。</td><td>可以在這裡拍照嗎？</td></tr>
+        <tr><td>禁止</td><td class="vb">ここでタバコを<strong>吸って</strong>はいけません。</td><td>不可以在這裡抽煙。</td></tr>
+        <tr><td>結果狀態</td><td class="vb">窓が<strong>開いて</strong>います。</td><td>窗戶開著。</td></tr>
+        <tr><td>試做</td><td class="vb">この服を<strong>着て</strong>みてもいいですか。</td><td>可以試穿這件衣服嗎？</td></tr>
+        <tr><td>完成</td><td class="vb">宿題をもう<strong>書いて</strong>しまいました。</td><td>作業已經寫完了。</td></tr>
+      </table></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===== Section 4: Interactive Quiz ===== -->
+<section class="sec" id="quiz">
+  <h2><span class="icon">4</span> 互動練習</h2>
+
+  <div class="quiz-panel">
+    <div class="quiz-mode-toggle" id="quizModeToggle">
+      <button class="on" onclick="setQuizMode('select')">選擇題</button>
+      <button onclick="setQuizMode('type')">打字輸入</button>
+    </div>
+    <div class="quiz-controls">
+      <select id="quizGroup">
+        <option value="all">全部動詞</option>
+        <option value="godan">五段動詞</option>
+        <option value="ichidan">一段動詞</option>
+        <option value="irregular">不規則動詞</option>
+      </select>
+      <select id="quizForm">
+        <option value="all">全部變化形</option>
+        <option value="masu">ます形</option>
+        <option value="te">て形</option>
+        <option value="nai">ない形</option>
+        <option value="ta">た形</option>
+        <option value="volitional">意向形</option>
+        <option value="potential">可能形</option>
+        <option value="passive">受身形</option>
+        <option value="causative">使役形</option>
+        <option value="causpass">使役受身形</option>
+        <option value="imperative">命令形</option>
+        <option value="conditional">条件形</option>
+        <option value="prohibitive">禁止形</option>
+      </select>
+      <button onclick="startQuiz()">開始練習</button>
+      <button class="secondary" onclick="resetQuiz()">重置</button>
+    </div>
+    <div class="quiz-score" id="quizScore">答對 0 / 0</div>
+    <div class="quiz-area" id="quizArea">
+      <p style="color:var(--tx2);font-size:14px">選擇動詞類型和變化形，按「開始練習」！</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Section 5: Verb Pairs ===== -->
+<section class="sec" id="pairs">
+  <h2><span class="icon">5</span> 自動詞・他動詞對照表</h2>
+  <p style="color:var(--tx2);font-size:13px;margin-bottom:16px">日語中很多動詞成對出現：自動詞（不及物）描述事物自然發生，他動詞（及物）描述人為動作。</p>
+
+  <div class="tip" style="margin-bottom:16px">
+    <strong>記憶技巧：</strong>很多時候，含「〜ある」的是自動詞，含「〜える」的是他動詞。例：集<strong>まる</strong>（自）/ 集<strong>める</strong>（他）。但也有例外，需要逐對記憶。
+  </div>
+
+  <div class="card open" id="card-pairs">
+    <div class="card-h" onclick="toggleCard('card-pairs')">
+      <span class="tag" style="background:#059669">對</span>
+      <span class="title">常見自他動詞配對</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="pair-header">
+        <span>自動詞（不及物）</span>
+        <span></span>
+        <span>他動詞（及物）</span>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--bd);border-top:none;border-radius:0 0 8px 8px">
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">開く</span> <span class="reading">あく</span><br><span class="meaning">（自然）打開</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">開ける</span> <span class="reading">あける</span><br><span class="meaning">（人）打開</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">閉まる</span> <span class="reading">しまる</span><br><span class="meaning">（自然）關上</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">閉める</span> <span class="reading">しめる</span><br><span class="meaning">（人）關上</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">始まる</span> <span class="reading">はじまる</span><br><span class="meaning">（自然）開始</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">始める</span> <span class="reading">はじめる</span><br><span class="meaning">（人）開始</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">決まる</span> <span class="reading">きまる</span><br><span class="meaning">（自然）決定</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">決める</span> <span class="reading">きめる</span><br><span class="meaning">（人）決定</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">集まる</span> <span class="reading">あつまる</span><br><span class="meaning">聚集</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">集める</span> <span class="reading">あつめる</span><br><span class="meaning">收集</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">変わる</span> <span class="reading">かわる</span><br><span class="meaning">（自然）改變</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">変える</span> <span class="reading">かえる</span><br><span class="meaning">（人）改變</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">上がる</span> <span class="reading">あがる</span><br><span class="meaning">上升</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">上げる</span> <span class="reading">あげる</span><br><span class="meaning">提高、舉起</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">下がる</span> <span class="reading">さがる</span><br><span class="meaning">下降</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">下げる</span> <span class="reading">さげる</span><br><span class="meaning">降低、放下</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">見つかる</span> <span class="reading">みつかる</span><br><span class="meaning">被找到</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">見つける</span> <span class="reading">みつける</span><br><span class="meaning">找到</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">壊れる</span> <span class="reading">こわれる</span><br><span class="meaning">壞掉</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">壊す</span> <span class="reading">こわす</span><br><span class="meaning">弄壞</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">消える</span> <span class="reading">きえる</span><br><span class="meaning">消失、熄滅</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">消す</span> <span class="reading">けす</span><br><span class="meaning">消除、關掉</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">付く</span> <span class="reading">つく</span><br><span class="meaning">附著、開啟</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">付ける</span> <span class="reading">つける</span><br><span class="meaning">貼上、打開</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">止まる</span> <span class="reading">とまる</span><br><span class="meaning">停下</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">止める</span> <span class="reading">とめる</span><br><span class="meaning">停止</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">入る</span> <span class="reading">はいる</span><br><span class="meaning">進入</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">入れる</span> <span class="reading">いれる</span><br><span class="meaning">放入</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">出る</span> <span class="reading">でる</span><br><span class="meaning">出去、出現</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">出す</span> <span class="reading">だす</span><br><span class="meaning">拿出</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">落ちる</span> <span class="reading">おちる</span><br><span class="meaning">掉落</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">落とす</span> <span class="reading">おとす</span><br><span class="meaning">弄掉</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">届く</span> <span class="reading">とどく</span><br><span class="meaning">送到</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">届ける</span> <span class="reading">とどける</span><br><span class="meaning">送達</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">直る</span> <span class="reading">なおる</span><br><span class="meaning">修好、恢復</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">直す</span> <span class="reading">なおす</span><br><span class="meaning">修理</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">起きる</span> <span class="reading">おきる</span><br><span class="meaning">起床、發生</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">起こす</span> <span class="reading">おこす</span><br><span class="meaning">叫醒、引起</span></div>
+        </div>
+
+        <div class="pair-row">
+          <div class="pair-label"><span class="kanji">育つ</span> <span class="reading">そだつ</span><br><span class="meaning">長大</span></div>
+          <div class="pair-arrow">⇄</div>
+          <div class="pair-label"><span class="kanji">育てる</span> <span class="reading">そだてる</span><br><span class="meaning">養育</span></div>
+        </div>
+
+      </div>
+    </div></div>
+  </div>
+
+  <div class="card" id="card-pairs-example">
+    <div class="card-h" onclick="toggleCard('card-pairs-example')">
+      <span class="tag" style="background:#059669">例</span>
+      <span class="title">自他動詞用法比較例句</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-b"><div class="card-x">
+      <div class="tbl-wrap"><table>
+        <tr><th>自動詞例句</th><th>中文</th><th>他動詞例句</th><th>中文</th></tr>
+        <tr><td>ドア<strong>が</strong>開いた。</td><td>門開了。</td><td>彼<strong>が</strong>ドア<strong>を</strong>開けた。</td><td>他開了門。</td></tr>
+        <tr><td>授業<strong>が</strong>始まった。</td><td>課開始了。</td><td>先生<strong>が</strong>授業<strong>を</strong>始めた。</td><td>老師開始上課。</td></tr>
+        <tr><td>花瓶<strong>が</strong>壊れた。</td><td>花瓶壞了。</td><td>猫<strong>が</strong>花瓶<strong>を</strong>壊した。</td><td>貓弄壞了花瓶。</td></tr>
+        <tr><td>電気<strong>が</strong>消えた。</td><td>電燈滅了。</td><td>母<strong>が</strong>電気<strong>を</strong>消した。</td><td>媽媽關了燈。</td></tr>
+        <tr><td>鍵<strong>が</strong>見つかった。</td><td>鑰匙找到了。</td><td>私<strong>が</strong>鍵<strong>を</strong>見つけた。</td><td>我找到了鑰匙。</td></tr>
+      </table></div>
+      <div class="tip"><strong>關鍵區別：</strong>自動詞用「が」標記主語，他動詞用「を」標記受詞。看到「を」基本就是他動詞。</div>
+    </div></div>
+  </div>
+</section>
+
+</main>
+
+<button class="btt" id="btt" onclick="scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+
+<footer class="ft">
+  hayashi JLPT 備考筆記 &mdash; <a href="index.html">回首頁</a>
+</footer>
+
+<script>
+// ============================================================
+// Card toggle
+// ============================================================
+function toggleCard(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+// ============================================================
+// TTS speak
+// ============================================================
+function speak(text) {
+  if (!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ja-JP';
+  u.rate = 0.85;
+  // Try to find a Japanese voice
+  const voices = speechSynthesis.getVoices();
+  const ja = voices.find(v => v.lang.startsWith('ja'));
+  if (ja) u.voice = ja;
+  speechSynthesis.speak(u);
+}
+// Preload voices
+if ('speechSynthesis' in window) {
+  speechSynthesis.getVoices();
+  speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+}
+
+// ============================================================
+// Scroll-to-top button
+// ============================================================
+const btt = document.getElementById('btt');
+window.addEventListener('scroll', () => {
+  btt.classList.toggle('show', window.scrollY > 300);
+});
+
+// ============================================================
+// Nav pills active state
+// ============================================================
+const pills = document.querySelectorAll('.nav-pills a');
+const sections = ['groups', 'conjugation', 'te-form', 'quiz', 'pairs'].map(id => document.getElementById(id));
+window.addEventListener('scroll', () => {
+  let current = 0;
+  sections.forEach((sec, i) => {
+    if (sec && sec.getBoundingClientRect().top < 120) current = i;
+  });
+  pills.forEach((p, i) => p.classList.toggle('on', i === current));
+});
+
+// ============================================================
+// Conjugation Data
+// ============================================================
+const VERBS = [
+  // Godan verbs
+  { dict:'書く', reading:'かく', group:'godan', ending:'く',
+    masu:'書きます', te:'書いて', nai:'書かない', ta:'書いた',
+    volitional:'書こう', potential:'書ける', passive:'書かれる',
+    causative:'書かせる', causpass:'書かせられる',
+    imperative:'書け', conditional:'書けば', prohibitive:'書くな' },
+  { dict:'飲む', reading:'のむ', group:'godan', ending:'む',
+    masu:'飲みます', te:'飲んで', nai:'飲まない', ta:'飲んだ',
+    volitional:'飲もう', potential:'飲める', passive:'飲まれる',
+    causative:'飲ませる', causpass:'飲ませられる',
+    imperative:'飲め', conditional:'飲めば', prohibitive:'飲むな' },
+  { dict:'話す', reading:'はなす', group:'godan', ending:'す',
+    masu:'話します', te:'話して', nai:'話さない', ta:'話した',
+    volitional:'話そう', potential:'話せる', passive:'話される',
+    causative:'話させる', causpass:'話させられる',
+    imperative:'話せ', conditional:'話せば', prohibitive:'話すな' },
+  { dict:'買う', reading:'かう', group:'godan', ending:'う',
+    masu:'買います', te:'買って', nai:'買わない', ta:'買った',
+    volitional:'買おう', potential:'買える', passive:'買われる',
+    causative:'買わせる', causpass:'買わせられる',
+    imperative:'買え', conditional:'買えば', prohibitive:'買うな' },
+  { dict:'待つ', reading:'まつ', group:'godan', ending:'つ',
+    masu:'待ちます', te:'待って', nai:'待たない', ta:'待った',
+    volitional:'待とう', potential:'待てる', passive:'待たれる',
+    causative:'待たせる', causpass:'待たせられる',
+    imperative:'待て', conditional:'待てば', prohibitive:'待つな' },
+  { dict:'死ぬ', reading:'しぬ', group:'godan', ending:'ぬ',
+    masu:'死にます', te:'死んで', nai:'死なない', ta:'死んだ',
+    volitional:'死のう', potential:'死ねる', passive:'死なれる',
+    causative:'死なせる', causpass:'死なせられる',
+    imperative:'死ね', conditional:'死ねば', prohibitive:'死ぬな' },
+  { dict:'遊ぶ', reading:'あそぶ', group:'godan', ending:'ぶ',
+    masu:'遊びます', te:'遊んで', nai:'遊ばない', ta:'遊んだ',
+    volitional:'遊ぼう', potential:'遊べる', passive:'遊ばれる',
+    causative:'遊ばせる', causpass:'遊ばせられる',
+    imperative:'遊べ', conditional:'遊べば', prohibitive:'遊ぶな' },
+  { dict:'走る', reading:'はしる', group:'godan', ending:'る',
+    masu:'走ります', te:'走って', nai:'走らない', ta:'走った',
+    volitional:'走ろう', potential:'走れる', passive:'走られる',
+    causative:'走らせる', causpass:'走らせられる',
+    imperative:'走れ', conditional:'走れば', prohibitive:'走るな' },
+  { dict:'泳ぐ', reading:'およぐ', group:'godan', ending:'ぐ',
+    masu:'泳ぎます', te:'泳いで', nai:'泳がない', ta:'泳いだ',
+    volitional:'泳ごう', potential:'泳げる', passive:'泳がれる',
+    causative:'泳がせる', causpass:'泳がせられる',
+    imperative:'泳げ', conditional:'泳げば', prohibitive:'泳ぐな' },
+  // Ichidan verbs
+  { dict:'食べる', reading:'たべる', group:'ichidan', ending:'る',
+    masu:'食べます', te:'食べて', nai:'食べない', ta:'食べた',
+    volitional:'食べよう', potential:'食べられる', passive:'食べられる',
+    causative:'食べさせる', causpass:'食べさせられる',
+    imperative:'食べろ', conditional:'食べれば', prohibitive:'食べるな' },
+  { dict:'見る', reading:'みる', group:'ichidan', ending:'る',
+    masu:'見ます', te:'見て', nai:'見ない', ta:'見た',
+    volitional:'見よう', potential:'見られる', passive:'見られる',
+    causative:'見させる', causpass:'見させられる',
+    imperative:'見ろ', conditional:'見れば', prohibitive:'見るな' },
+  { dict:'起きる', reading:'おきる', group:'ichidan', ending:'る',
+    masu:'起きます', te:'起きて', nai:'起きない', ta:'起きた',
+    volitional:'起きよう', potential:'起きられる', passive:'起きられる',
+    causative:'起きさせる', causpass:'起きさせられる',
+    imperative:'起きろ', conditional:'起きれば', prohibitive:'起きるな' },
+  { dict:'教える', reading:'おしえる', group:'ichidan', ending:'る',
+    masu:'教えます', te:'教えて', nai:'教えない', ta:'教えた',
+    volitional:'教えよう', potential:'教えられる', passive:'教えられる',
+    causative:'教えさせる', causpass:'教えさせられる',
+    imperative:'教えろ', conditional:'教えれば', prohibitive:'教えるな' },
+  // Irregular
+  { dict:'する', reading:'する', group:'irregular', ending:'する',
+    masu:'します', te:'して', nai:'しない', ta:'した',
+    volitional:'しよう', potential:'できる', passive:'される',
+    causative:'させる', causpass:'させられる',
+    imperative:'しろ', conditional:'すれば', prohibitive:'するな' },
+  { dict:'来る', reading:'くる', group:'irregular', ending:'くる',
+    masu:'来ます', te:'来て', nai:'来ない', ta:'来た',
+    volitional:'来よう', potential:'来られる', passive:'来られる',
+    causative:'来させる', causpass:'来させられる',
+    imperative:'来い', conditional:'来れば', prohibitive:'来るな' },
+];
+
+const FORM_NAMES = {
+  masu:'ます形', te:'て形', nai:'ない形', ta:'た形',
+  volitional:'意向形', potential:'可能形', passive:'受身形',
+  causative:'使役形', causpass:'使役受身形',
+  imperative:'命令形', conditional:'条件形（ば形）', prohibitive:'禁止形'
+};
+
+const FORM_KEYS = Object.keys(FORM_NAMES);
+
+// ============================================================
+// Quiz State
+// ============================================================
+let quizState = {
+  mode: 'select', // 'select' or 'type'
+  correct: 0,
+  total: 0,
+  currentVerb: null,
+  currentForm: null,
+  answered: false,
+};
+
+function setQuizMode(mode) {
+  quizState.mode = mode;
+  document.querySelectorAll('#quizModeToggle button').forEach(b => {
+    b.classList.toggle('on', (mode === 'select' && b.textContent === '選擇題') ||
+                             (mode === 'type' && b.textContent === '打字輸入'));
+  });
+}
+
+function getFilteredVerbs() {
+  const group = document.getElementById('quizGroup').value;
+  if (group === 'all') return VERBS;
+  return VERBS.filter(v => v.group === group);
+}
+
+function getFilteredForms() {
+  const form = document.getElementById('quizForm').value;
+  if (form === 'all') return FORM_KEYS;
+  return [form];
+}
+
+function resetQuiz() {
+  quizState.correct = 0;
+  quizState.total = 0;
+  quizState.answered = false;
+  document.getElementById('quizScore').textContent = '答對 0 / 0';
+  document.getElementById('quizArea').innerHTML = '<p style="color:var(--tx2);font-size:14px">選擇動詞類型和變化形，按「開始練習」！</p>';
+}
+
+function startQuiz() {
+  quizState.answered = false;
+  const verbs = getFilteredVerbs();
+  const forms = getFilteredForms();
+  if (!verbs.length) return;
+
+  const verb = verbs[Math.floor(Math.random() * verbs.length)];
+  const formKey = forms[Math.floor(Math.random() * forms.length)];
+  quizState.currentVerb = verb;
+  quizState.currentForm = formKey;
+
+  const answer = verb[formKey];
+  const area = document.getElementById('quizArea');
+
+  if (quizState.mode === 'type') {
+    area.innerHTML = `
+      <div class="quiz-prompt">${verb.dict}</div>
+      <div class="quiz-target">→ ${FORM_NAMES[formKey]}</div>
+      <input class="quiz-input" id="quizInput" type="text" placeholder="輸入答案..." autocomplete="off" autofocus>
+      <div class="quiz-answer" id="quizAnswer"></div>
+      <button class="quiz-next" id="quizNext" onclick="startQuiz()">下一題</button>
+    `;
+    const input = document.getElementById('quizInput');
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') checkTypedAnswer(answer);
+    });
+    // Also allow pressing Enter on next question
+    input.focus();
+  } else {
+    // Generate options
+    const options = generateOptions(verb, formKey, answer);
+    let optionsHtml = options.map(opt =>
+      `<button class="quiz-opt" onclick="checkSelectedAnswer(this,'${escHtml(answer)}')">${opt}</button>`
+    ).join('');
+    area.innerHTML = `
+      <div class="quiz-prompt">${verb.dict}</div>
+      <div class="quiz-target">→ ${FORM_NAMES[formKey]}</div>
+      <div class="quiz-options">${optionsHtml}</div>
+      <div class="quiz-answer" id="quizAnswer"></div>
+      <button class="quiz-next" id="quizNext" onclick="startQuiz()">下一題</button>
+    `;
+  }
+}
+
+function escHtml(s) {
+  return s.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+function generateOptions(verb, formKey, correct) {
+  const allAnswers = VERBS.map(v => v[formKey]).filter(a => a !== correct);
+  // Shuffle and pick 3 wrong answers
+  for (let i = allAnswers.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [allAnswers[i], allAnswers[j]] = [allAnswers[j], allAnswers[i]];
+  }
+  const wrong = allAnswers.slice(0, 3);
+  const opts = [correct, ...wrong];
+  // Shuffle options
+  for (let i = opts.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [opts[i], opts[j]] = [opts[j], opts[i]];
+  }
+  return opts;
+}
+
+function checkTypedAnswer(correct) {
+  if (quizState.answered) return;
+  quizState.answered = true;
+  quizState.total++;
+
+  const input = document.getElementById('quizInput');
+  const answerEl = document.getElementById('quizAnswer');
+  const nextBtn = document.getElementById('quizNext');
+  const userAnswer = input.value.trim();
+
+  if (userAnswer === correct) {
+    quizState.correct++;
+    input.classList.add('correct');
+    answerEl.textContent = '正確！';
+    answerEl.className = 'quiz-answer correct';
+  } else {
+    input.classList.add('wrong');
+    answerEl.innerHTML = `不對！正確答案：<strong>${correct}</strong>`;
+    answerEl.className = 'quiz-answer wrong';
+  }
+
+  input.disabled = true;
+  nextBtn.style.display = 'inline-block';
+  updateScore();
+}
+
+function checkSelectedAnswer(btn, correct) {
+  if (quizState.answered) return;
+  quizState.answered = true;
+  quizState.total++;
+
+  const answerEl = document.getElementById('quizAnswer');
+  const nextBtn = document.getElementById('quizNext');
+  const allBtns = document.querySelectorAll('.quiz-opt');
+
+  allBtns.forEach(b => {
+    b.classList.add('disabled');
+    if (b.textContent === correct) b.classList.add('correct');
+  });
+
+  if (btn.textContent === correct) {
+    quizState.correct++;
+    answerEl.textContent = '正確！';
+    answerEl.className = 'quiz-answer correct';
+  } else {
+    btn.classList.add('wrong');
+    answerEl.innerHTML = `不對！正確答案：<strong>${correct}</strong>`;
+    answerEl.className = 'quiz-answer wrong';
+  }
+
+  nextBtn.style.display = 'inline-block';
+  updateScore();
+}
+
+function updateScore() {
+  const pct = quizState.total > 0 ? Math.round(quizState.correct / quizState.total * 100) : 0;
+  document.getElementById('quizScore').textContent =
+    `答對 ${quizState.correct} / ${quizState.total}（${pct}%）`;
+}
+
+</script>
+</body>
+</html>
