@@ -218,6 +218,14 @@ body {
 }
 .fav-pill:hover { color: var(--ac); }
 .fav-pill.fav-on { color: var(--ac); }
+.more-item {
+  display: block; width: 100%; text-align: left;
+  background: none; border: none; color: var(--tx);
+  padding: 10px 14px; font-size: 14px; cursor: pointer;
+  border-radius: 8px; text-decoration: none;
+  transition: background .15s;
+}
+.more-item:hover, .more-item:active { background: var(--bg3); }
 .tabs { display: contents; }
 .fav-btn { display: none; }
 
@@ -876,39 +884,25 @@ body {
     <button class="fav-pill" id="favBtn" onclick="toggleFavFilter()">★</button>
   </div>
 </header>
-<!-- Bottom nav: 5 items (UX guideline) -->
+<!-- Bottom nav -->
 <nav class="ftb" id="ftb">
   <button class="ftb-btn on" onclick="switchBottomTab(this)"><svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>學習</button>
-  <button class="ftb-btn" onclick="Quiz.start();switchBottomTab(this)"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>測驗</button>
-  <button class="ftb-btn" onclick="MockExam.start();switchBottomTab(this)"><svg viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path d="M8 20v-7.5l4-2.222"/></svg>模考</button>
-  <button class="ftb-btn" onclick="openDrawer('tools')"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>工具</button>
-  <button class="ftb-btn" onclick="openDrawer('profile')"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>我的</button>
+  <button class="ftb-btn" onclick="Quiz.start()"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>測驗</button>
+  <button class="ftb-btn" id="reviewBtn" onclick="SRS.start()"><svg viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>複習</button>
+  <button class="ftb-btn" onclick="Stats.open()"><svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>統計</button>
+  <button class="ftb-btn" onclick="openMoreMenu()"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>更多</button>
 </nav>
 
-<!-- Tools drawer -->
-<div class="drawer-bg" id="toolsDrawer" onclick="closeDrawer()">
-  <div class="drawer" onclick="event.stopPropagation()">
-    <div class="drawer-handle"></div>
-    <div class="drawer-grid">
-      <button id="reviewBtn" onclick="document.getElementById('toolsDrawer').classList.remove('show');SRS.start()"><svg viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>複習</button>
-      <button onclick="document.getElementById('toolsDrawer').classList.remove('show');GrammarDrill.start()"><svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>文法練習</button>
-      <button onclick="document.getElementById('toolsDrawer').classList.remove('show');Reading.start()"><svg viewBox="0 0 24 24"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2"/></svg>讀解</button>
-      <button onclick="document.getElementById('toolsDrawer').classList.remove('show');Listening.start()"><svg viewBox="0 0 24 24"><path d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707A1 1 0 0112 5.586v12.828a1 1 0 01-1.707.707L5.586 15z"/></svg>聽力</button>
-      <a href="verbs.html"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7"/></svg>動詞變化</a>
-    </div>
-  </div>
-</div>
-
-<!-- Profile drawer -->
-<div class="drawer-bg" id="profileDrawer" onclick="closeDrawer()">
-  <div class="drawer" onclick="event.stopPropagation()">
-    <div class="drawer-handle"></div>
-    <div class="drawer-grid">
-      <button onclick="document.getElementById('profileDrawer').classList.remove('show');Stats.open()"><svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>統計</button>
-      <button onclick="document.getElementById('profileDrawer').classList.remove('show');Stats.open();setTimeout(function(){Stats.switchTab('notebook')},50)"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>生詞本</button>
-      <button onclick="document.getElementById('profileDrawer').classList.remove('show');Stats.open();setTimeout(function(){Stats.switchTab('history')},50)"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>考試紀錄</button>
-    </div>
-  </div>
+<!-- More menu (simple absolute popup, no drawer) -->
+<div id="moreMenu" style="display:none;position:fixed;bottom:60px;right:8px;background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:8px;z-index:250;box-shadow:0 4px 20px rgba(0,0,0,.12);min-width:140px">
+  <button class="more-item" onclick="closeMore();MockExam.start()">模擬考</button>
+  <button class="more-item" onclick="closeMore();GrammarDrill.start()">文法練習</button>
+  <button class="more-item" onclick="closeMore();Reading.start()">讀解練習</button>
+  <button class="more-item" onclick="closeMore();Listening.start()">聽力練習</button>
+  <a class="more-item" href="verbs.html">動詞變化</a>
+  <hr style="border:none;border-top:1px solid var(--bd);margin:4px 0">
+  <button class="more-item" onclick="closeMore();Stats.open();setTimeout(function(){Stats.switchTab('notebook')},50)">生詞本</button>
+  <button class="more-item" onclick="closeMore();Stats.open();setTimeout(function(){Stats.switchTab('history')},50)">考試紀錄</button>
 </div>
 
 <nav class="sd" id="sd"></nav>
@@ -1675,28 +1669,20 @@ if(location.hash){const el=document.querySelector(location.hash);if(el&&el.class
 setTimeout(()=>{ if(typeof SRS!=='undefined') SRS.updateReviewCount(); }, 100);
 
 // ========== DRAWER (Tools / Profile) ==========
-function openDrawer(type) {
-  const id = type === 'tools' ? 'toolsDrawer' : 'profileDrawer';
-  document.getElementById(id).classList.add('show');
+function openMoreMenu() {
+  var m = document.getElementById('moreMenu');
+  m.style.display = m.style.display === 'none' ? 'block' : 'none';
 }
-function closeDrawer() {
-  document.querySelectorAll('.drawer-bg').forEach(d => d.classList.remove('show'));
+function closeMore() {
+  document.getElementById('moreMenu').style.display = 'none';
 }
-function drawerAction(action) {
-  document.querySelectorAll('.drawer-bg').forEach(d => d.classList.remove('show'));
-  // Use longer delay to ensure drawer is fully hidden before opening overlay
-  window.setTimeout(function() {
-    switch(action) {
-      case 'stats': if(typeof Stats!=='undefined') Stats.open(); break;
-      case 'notebook': if(typeof Stats!=='undefined'){ Stats.open(); window.setTimeout(function(){ Stats.switchTab('notebook'); },150); } break;
-      case 'history': if(typeof Stats!=='undefined'){ Stats.open(); window.setTimeout(function(){ Stats.switchTab('history'); },150); } break;
-      case 'srs': if(typeof SRS!=='undefined') SRS.start(); break;
-      case 'grammar': if(typeof GrammarDrill!=='undefined') GrammarDrill.start(); break;
-      case 'reading': if(typeof Reading!=='undefined') Reading.start(); break;
-      case 'listening': if(typeof Listening!=='undefined') Listening.start(); break;
-    }
-  }, 350);
-}
+// Close more menu when clicking outside
+document.addEventListener('click', function(e) {
+  var m = document.getElementById('moreMenu');
+  if (m && m.style.display !== 'none' && !m.contains(e.target) && !e.target.closest('.ftb-btn:last-child')) {
+    m.style.display = 'none';
+  }
+});
 function switchBottomTab(btn) {
   document.querySelectorAll('.ftb-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
