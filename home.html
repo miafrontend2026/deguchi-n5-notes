@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日本再留計劃 — 免費 JLPT 備考工具</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="再留計劃">
+<meta name="theme-color" content="#2C2C2C">
+<meta name="description" content="為了留在日本，我做了這個免費 JLPT 備考工具。7710+ 單字、433 文法、模擬考、SRS 間隔複習，從 N5 到 N1 完整收錄。">
+<meta property="og:title" content="日本再留計劃 — 免費 JLPT N5~N1 備考工具">
+<meta property="og:description" content="在大阪工作的台灣人，為了通過 JLPT N2 拿到簽證續簽資格，把所有備考資源整理成一個免費工具。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="icon.svg">
+<style>
+/* ======================================================
+   再留計劃 — Landing Page
+   ====================================================== */
+
+/* == Theme Variables == */
+:root {
+  --bg: #FAF9F6;
+  --bg2: #FFFFFF;
+  --bg3: #F3F1ED;
+  --hd: #FAF9F6;
+  --tx: #2C2C2C;
+  --tx2: #7A7A7A;
+  --tx-s: #ACACAC;
+  --tx3: #ACACAC;
+  --ac: #D4654A;
+  --ac2: #4A7FD4;
+  --bd: #E8E5E0;
+  --sh: 0 1px 3px rgba(0,0,0,.03);
+  --sh2: 0 2px 6px rgba(0,0,0,.05);
+  --r: 14px;
+  --hh: 48px;
+  --note-bg: #FFF8F0;
+  --note-tx: #92400E;
+  --em-color: #B45309;
+  --ease: cubic-bezier(.25,.1,.25,1);
+}
+[data-theme="dark"] {
+  --bg: #1C1C1E;
+  --bg2: #2C2C2E;
+  --bg3: #242426;
+  --hd: #1C1C1E;
+  --tx: #E5E5E5;
+  --tx2: #8E8E93;
+  --tx-s: #636366;
+  --tx3: #636366;
+  --ac: #E8734A;
+  --ac2: #6BA8F5;
+  --bd: #3A3A3C;
+  --sh: none;
+  --sh2: none;
+  --note-bg: #2A2218;
+  --note-tx: #D4A574;
+  --em-color: #E8A060;
+}
+
+/* == Reset & Transitions == */
+*{margin:0;padding:0;box-sizing:border-box;
+  transition: color .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease), opacity .2s var(--ease);
+}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "PingFang TC", system-ui, sans-serif;
+  background: var(--bg); color: var(--tx);
+  line-height: 1.7; font-size: 16px;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--ac2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* == Header == */
+.hd {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: var(--bg); z-index: 100;
+  border-bottom: 1px solid var(--bd);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+}
+.hd-inner {
+  max-width: 960px; margin: 0 auto;
+  display: flex; align-items: center;
+  padding: 0 20px; height: var(--hh); gap: 12px;
+}
+.hd h1 {
+  color: var(--tx); font-size: 17px; font-weight: 800;
+  white-space: nowrap; letter-spacing: -.3px;
+}
+.hd-links { display: flex; gap: 6px; margin-left: auto; align-items: center; }
+.hd-links a {
+  color: var(--tx2); text-decoration: none; font-size: 13px;
+  padding: 5px 12px; border-radius: 20px; font-weight: 500;
+  transition: all .2s var(--ease); white-space: nowrap;
+  background: var(--bg3);
+}
+.hd-links a:hover { color: var(--ac); background: var(--bg2); text-decoration: none; }
+
+/* Theme toggle */
+.theme-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--tx3); padding: 6px;
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  transition: color .2s var(--ease), background .2s var(--ease);
+  flex-shrink: 0;
+}
+.theme-btn:hover { color: var(--tx); background: var(--bg3); }
+.theme-btn svg { width: 18px; height: 18px; }
+
+/* == Hero == */
+.hero {
+  padding: calc(var(--hh) + 80px) 20px 80px;
+  text-align: center;
+  position: relative; overflow: hidden;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg3) 100%);
+}
+.hero::before {
+  content: ''; position: absolute; top: 30%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(212,101,74,.06) 0%, transparent 70%);
+  border-radius: 50%; pointer-events: none;
+}
+[data-theme="dark"] .hero::before {
+  background: radial-gradient(circle, rgba(232,115,74,.04) 0%, transparent 70%);
+}
+[data-theme="dark"] .hero {
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg3) 100%);
+}
+.hero-title {
+  font-size: 42px; font-weight: 800; letter-spacing: -.5px;
+  margin-bottom: 16px; position: relative;
+  line-height: 1.3;
+}
+.hero-subtitle {
+  font-size: 20px; color: var(--tx2); margin-bottom: 16px;
+  font-weight: 500; position: relative;
+}
+.hero-desc {
+  max-width: 560px; margin: 0 auto 36px;
+  font-size: 15px; color: var(--tx2); line-height: 1.9;
+  position: relative;
+}
+.hero-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--ac); color: #fff;
+  padding: 14px 36px; border-radius: 28px;
+  font-size: 16px; font-weight: 700;
+  text-decoration: none; position: relative;
+  box-shadow: 0 4px 16px rgba(212,101,74,.2);
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.hero-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(212,101,74,.3);
+  text-decoration: none;
+}
+
+/* == Section Wrapper == */
+.section { padding: 72px 20px; }
+.section-inner { max-width: 880px; margin: 0 auto; }
+.section-title {
+  font-size: 26px; font-weight: 800; text-align: center;
+  margin-bottom: 48px; letter-spacing: -.3px;
+}
+
+/* == Features == */
+.features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.feature-card {
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  padding: 28px 24px;
+  transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.feature-card:hover {
+  border-color: var(--ac2);
+  box-shadow: var(--sh2);
+}
+[data-theme="dark"] .feature-card:hover { box-shadow: none; }
+.feature-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+  background: rgba(74,127,212,.08);
+}
+[data-theme="dark"] .feature-icon { background: rgba(107,168,245,.1); }
+.feature-icon svg { width: 22px; height: 22px; stroke: var(--ac2); fill: none; stroke-width: 1.5; }
+.feature-icon.accent { background: rgba(212,101,74,.08); }
+.feature-icon.accent svg { stroke: var(--ac); }
+[data-theme="dark"] .feature-icon.accent { background: rgba(232,115,74,.1); }
+.feature-icon.green { background: rgba(5,150,105,.08); }
+.feature-icon.green svg { stroke: #059669; }
+[data-theme="dark"] .feature-icon.green { background: rgba(52,211,153,.1); }
+[data-theme="dark"] .feature-icon.green svg { stroke: #34d399; }
+.feature-title {
+  font-size: 17px; font-weight: 700; margin-bottom: 6px;
+}
+.feature-desc {
+  font-size: 14px; color: var(--tx2); line-height: 1.7;
+}
+
+/* == Story == */
+.story {
+  background: var(--bg3);
+  border-top: 1px solid var(--bd);
+  border-bottom: 1px solid var(--bd);
+}
+.story-text {
+  max-width: 640px; margin: 0 auto;
+  font-size: 15px; line-height: 2;
+  color: var(--tx2);
+}
+.story-text p { margin-bottom: 16px; }
+.story-text p:last-child { margin-bottom: 0; }
+
+/* == Stats == */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  text-align: center;
+}
+.stat-item {
+  padding: 24px 12px;
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+}
+.stat-number {
+  font-size: 36px; font-weight: 800; color: var(--ac);
+  letter-spacing: -.5px; line-height: 1.2;
+}
+.stat-label {
+  font-size: 13px; color: var(--tx2); margin-top: 4px;
+}
+
+/* == Footer == */
+.ft {
+  padding: 40px 20px;
+  text-align: center; color: var(--tx3);
+  font-size: 12px; border-top: 1px solid var(--bd);
+  background: var(--bg); line-height: 1.9;
+}
+.ft a { color: var(--ac2); text-decoration: none; }
+.ft a:hover { text-decoration: underline; }
+.bmc-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #FFDD00; color: #000;
+  padding: 8px 18px; border-radius: 20px;
+  text-decoration: none; font-size: 13px; font-weight: 600;
+  transition: opacity .2s var(--ease);
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  margin-bottom: 16px;
+}
+.bmc-btn:hover { opacity: .9; text-decoration: none; }
+.ft-links { display: flex; gap: 16px; justify-content: center; margin-top: 12px; }
+
+/* == Responsive == */
+@media(max-width:768px) {
+  .hero { padding: calc(var(--hh) + 48px) 20px 56px; }
+  .hero-title { font-size: 30px; }
+  .hero-subtitle { font-size: 17px; }
+  .hero-desc { font-size: 14px; }
+  .features { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .section { padding: 48px 16px; }
+  .section-title { font-size: 22px; margin-bottom: 32px; }
+  .stat-number { font-size: 28px; }
+}
+@media(max-width:480px) {
+  .hero-title { font-size: 26px; }
+  .hd h1 { font-size: 15px; }
+  .hd-links a { font-size: 12px; padding: 4px 10px; }
+}
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <div class="hd-inner">
+    <h1>日本再留計劃</h1>
+    <div class="hd-links">
+      <a href="index.html">學習工具</a>
+      <a href="verbs.html">動詞變化</a>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" aria-label="切換深色模式"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <h2 class="hero-title">日本再留計劃</h2>
+  <p class="hero-subtitle">為了留在日本，我做了這個工具。</p>
+  <p class="hero-desc">在大阪工作的台灣人，為了通過 JLPT N2 拿到簽證續簽資格，把所有備考資源整理成一個免費工具。如果你也在為日文考試奮鬥，希望這裡能幫到你。</p>
+  <a href="index.html" class="hero-cta">開始學習 <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+</section>
+
+<!-- Features -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-title">工具功能一覽</h2>
+    <div class="features">
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><path d="M8 7h8M8 11h5"/></svg>
+        </div>
+        <div class="feature-title">7,710 個單字</div>
+        <div class="feature-desc">N5 到 N1 完整收錄，每日 20 個不多不少</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon accent">
+          <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <div class="feature-title">433 個文法</div>
+        <div class="feature-desc">接續規則、例句、大阪場景，翻牌記憶不會忘</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon green">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div class="feature-title">模擬考 + 測驗</div>
+        <div class="feature-desc">JLPT 格式計時模考，答錯的自動收進生詞本</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+        </div>
+        <div class="feature-title">SRS 間隔複習</div>
+        <div class="feature-desc">科學記憶曲線，每天複習該複習的，不浪費時間</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Story -->
+<section class="section story">
+  <div class="section-inner">
+    <h2 class="section-title">為什麼做這個？</h2>
+    <div class="story-text">
+      <p>來日本之後才發現，語言能力決定你能不能留下來。</p>
+      <p>JLPT N2 是很多工作簽證的門檻。市面上的備考工具不是太貴就是太散，所以我決定自己做一個——把單字、文法、模考、複習全部整合在一起。</p>
+      <p>這個工具完全免費，因為我知道在海外打拼的人不需要再多一筆開銷。如果它幫到了你，請幫我分享給其他正在準備 JLPT 的朋友。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="section">
+  <div class="section-inner">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">7,710+</div>
+        <div class="stat-label">單字</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">433</div>
+        <div class="stat-label">文法點</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">80</div>
+        <div class="stat-label">組易混淆詞</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">5</div>
+        <div class="stat-label">個級別 N5~N1</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="ft">
+  <div style="margin-bottom:16px">
+    <a href="https://www.buymeacoffee.com/hayashilog" target="_blank" class="bmc-btn">
+      <svg width="20" height="20" viewBox="0 0 884 1279" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M791.1 346.3H93c-36.5 0-66-29.5-66-66V93c0-36.5 29.5-66 66-66h698.1c36.5 0 66 29.5 66 66v187.3c0 36.5-29.5 66-66 66z" fill="#0D0C22"/><path d="m167.4 640.5 39.2 540.1c3.6 49.8 44.7 88.7 94.6 88.7h281.7c49.9 0 91-38.9 94.6-88.7l39.2-540.1H167.4z" fill="#FFDD00"/><path d="M675.3 346.3H208.8c-30.3 0-54.9-24.6-54.9-54.9v0c0-30.3 24.6-54.9 54.9-54.9h466.5c30.3 0 54.9 24.6 54.9 54.9v0c0 30.3-24.6 54.9-54.9 54.9z" fill="#0D0C22"/></svg>
+      Buy me a coffee
+    </a>
+  </div>
+  <div>&copy; 2026 再留計劃</div>
+  <div style="margin-top:4px">本站內容為原創整理，不隸屬於 JLPT 官方或任何教育機構。</div>
+  <div class="ft-links">
+    <a href="index.html">學習工具</a>
+    <a href="verbs.html">動詞變化</a>
+    <a href="https://github.com/miafrontend2026/stayjp.study" target="_blank">GitHub</a>
+  </div>
+</footer>
+
+<script>
+// ========== THEME ==========
+function initTheme() {
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+  updateThemeIcon();
+}
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+  updateThemeIcon();
+}
+function updateThemeIcon() {
+  const btn = document.getElementById('themeBtn');
+  if (!btn) return;
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  btn.innerHTML = isDark
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>';
+}
+initTheme();
+</script>
+</body>
+</html>

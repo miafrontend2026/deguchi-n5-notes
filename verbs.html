@@ -6,182 +6,411 @@
 <title>再留計劃 — 動詞變化完全攻略</title>
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon.svg">
-<meta name="theme-color" content="#1E293B">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#2C2C2C">
+<meta name="description" content="日語動詞變化完全攻略。三類動詞、12種變化形、て形音變、自他動詞配對，附互動練習。">
+<meta property="og:title" content="再留計劃 — 動詞變化完全攻略">
+<meta property="og:description" content="日語動詞變化完全攻略。三類動詞、12種變化形、て形音變、互動練習。">
 <style>
-:root{--bg:#FFFBEB;--bg2:#fff;--sidebar:#1E293B;--tx:#0F172A;--tx2:#64748B;--ac:#D97706;--ac2:#2563EB;--bd:#FAEEE1;--sh:0 1px 3px rgba(0,0,0,.05);--sh2:0 4px 16px rgba(0,0,0,.08);--r:10px;--hh:56px}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:calc(var(--hh) + 24px)}
-body{font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Noto Sans TC","PingFang TC",-apple-system,sans-serif;background:var(--bg);color:var(--tx);line-height:1.7;font-size:15px}
+/* ======================================================
+   再留計劃 — Muji-inspired Japanese Study Theme
+   ====================================================== */
 
-/* Header */
-.hd{position:fixed;top:0;left:0;right:0;height:var(--hh);background:var(--sidebar);display:flex;align-items:center;padding:0 20px;z-index:100;gap:12px}
-.hd h1{color:#fff;font-size:16px;font-family:"Noto Serif JP",serif;font-weight:700;white-space:nowrap}
-.hd h1 span{color:var(--ac)}
-.hd a.back{color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;padding:4px 12px;border:1px solid rgba(255,255,255,.2);border-radius:6px;transition:.2s;white-space:nowrap}
-.hd a.back:hover{color:#fff;border-color:var(--ac)}
+/* == Theme Variables == */
+:root {
+  --bg: #FAF9F6;
+  --bg2: #FFFFFF;
+  --bg3: #F3F1ED;
+  --hd: #FAF9F6;
+  --tx: #2C2C2C;
+  --tx2: #7A7A7A;
+  --tx-s: #ACACAC;
+  --tx3: #ACACAC;
+  --ac: #D4654A;
+  --ac2: #4A7FD4;
+  --bd: #E8E5E0;
+  --sh: 0 1px 3px rgba(0,0,0,.03);
+  --sh2: 0 2px 6px rgba(0,0,0,.05);
+  --r: 14px;
+  --hh: 48px;
+  --note-bg: #FFF8F0;
+  --note-tx: #92400E;
+  --em-color: #B45309;
+  --correct-bg: #dcfce7;
+  --correct-tx: #166534;
+  --correct-bd: #16a34a;
+  --wrong-bg: #fef2f2;
+  --wrong-tx: #991b1b;
+  --wrong-bd: #dc2626;
+  --ease: cubic-bezier(.25,.1,.25,1);
+}
+[data-theme="dark"] {
+  --bg: #1C1C1E;
+  --bg2: #2C2C2E;
+  --bg3: #242426;
+  --hd: #1C1C1E;
+  --tx: #E5E5E5;
+  --tx2: #8E8E93;
+  --tx-s: #636366;
+  --tx3: #636366;
+  --ac: #E8734A;
+  --ac2: #6BA8F5;
+  --bd: #3A3A3C;
+  --sh: none;
+  --sh2: none;
+  --note-bg: #2A2218;
+  --note-tx: #D4A574;
+  --em-color: #E8A060;
+  --correct-bg: #1A2E1A;
+  --correct-tx: #6BCB6B;
+  --correct-bd: #3A8A3A;
+  --wrong-bg: #2E1A1A;
+  --wrong-tx: #E86B6B;
+  --wrong-bd: #B83A3A;
+}
+
+/* == Reset & Global Transitions == */
+*{margin:0;padding:0;box-sizing:border-box;
+  transition: color .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease), opacity .2s var(--ease);
+}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--hh) + 24px)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "PingFang TC", system-ui, sans-serif;
+  background: var(--bg); color: var(--tx);
+  line-height: 1.7; font-size: 16px;
+  letter-spacing: 0.01em;
+  padding-bottom: 56px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* == Header == */
+.hd {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: var(--bg); z-index: 100;
+  border-bottom: 1px solid var(--bd);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+}
+.hd-top {
+  display: flex; align-items: center;
+  padding: 0 16px; height: var(--hh); gap: 10px;
+}
+.hd-top h1 {
+  color: var(--tx); font-size: 17px; font-weight: 800;
+  white-space: nowrap; letter-spacing: -.3px;
+}
+.hd-top h1 span {
+  color: var(--ac); font-size: 11px; font-weight: 500; margin-left: 2px;
+}
+.back-link {
+  color: var(--tx2); text-decoration: none; font-size: 13px;
+  padding: 4px 10px; border: 1px solid var(--bd); border-radius: 10px;
+  transition: border-color .2s var(--ease), color .2s var(--ease);
+  white-space: nowrap; flex-shrink: 0;
+}
+.back-link:hover { border-color: var(--ac); color: var(--ac); }
 
 /* Nav pills */
-.nav-pills{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
-.nav-pills a{color:rgba(255,255,255,.5);text-decoration:none;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:600;transition:.2s;white-space:nowrap}
-.nav-pills a:hover,.nav-pills a.on{background:rgba(255,255,255,.1);color:#fff}
-
-/* Main */
-.mn{max-width:960px;margin:0 auto;padding:calc(var(--hh) + 24px) 24px 60px}
-
-/* Intro hero */
-.intro{background:linear-gradient(135deg,#1E40AF,#1E293B);color:#fff;border-radius:var(--r);padding:28px 32px;margin-bottom:32px}
-.intro h2{font-family:"Noto Serif JP",serif;font-size:22px;margin-bottom:6px}
-.intro p{color:rgba(255,255,255,.65);font-size:13px;line-height:1.8}
-
-/* Sections */
-.sec{margin-bottom:40px}
-.sec>h2{font-family:"Noto Serif JP",serif;font-size:18px;font-weight:700;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--ac);display:flex;align-items:center;gap:8px}
-.sec>h2 .icon{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;background:var(--ac);color:#fff}
-
-/* Cards */
-.card{background:var(--bg2);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:12px;overflow:hidden;border:1px solid var(--bd);transition:.2s}
-.card:hover{box-shadow:var(--sh2)}
-.card-h{padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:10px;user-select:none;transition:background .15s}
-.card-h:hover{background:var(--bg)}
-.card-h .tag{background:var(--ac2);color:#fff;min-width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
-.card-h .tag.g1{background:#059669}
-.card-h .tag.g2{background:var(--ac2)}
-.card-h .tag.g3{background:#DC2626}
-.card-h .title{font-family:"Noto Serif JP",serif;font-size:15px;font-weight:700;flex:1}
-.card-h .arr{width:18px;height:18px;transition:.3s;stroke:#aaa;flex-shrink:0}
-.card.open .arr{transform:rotate(180deg)}
-.card-b{max-height:0;overflow:hidden;transition:max-height .4s ease}
-.card.open .card-b{max-height:8000px}
-.card-x{padding:4px 18px 18px;border-top:1px solid var(--bd)}
-
-/* Tip box */
-.tip{background:#FEF3C7;border-radius:7px;padding:10px 14px;margin:12px 0;font-size:13px;color:#92400E;border-left:3px solid var(--ac);line-height:1.8}
-.tip strong{color:#B45309}
-
-/* Danger box */
-.danger{background:#FEE2E2;border-radius:7px;padding:10px 14px;margin:12px 0;font-size:13px;color:#991B1B;border-left:3px solid #DC2626;line-height:1.8}
-
-/* Info box */
-.info{background:#DBEAFE;border-radius:7px;padding:10px 14px;margin:12px 0;font-size:13px;color:#1E40AF;border-left:3px solid var(--ac2);line-height:1.8}
-
-/* Tables */
-.tbl-wrap{overflow-x:auto;margin:12px 0;border-radius:8px;border:1px solid var(--bd)}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{background:var(--sidebar);color:#fff;padding:8px 12px;text-align:left;font-size:12px;font-weight:600;white-space:nowrap;position:sticky;top:0}
-td{padding:7px 12px;border-bottom:1px solid var(--bd);white-space:nowrap}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:#FEF9E7}
-td.vb{font-family:"Noto Serif JP",serif;font-weight:700;color:var(--ac2)}
-td.hl{color:#B45309;font-weight:600}
-.tbl-wrap.sticky-col td:first-child,
-.tbl-wrap.sticky-col th:first-child{position:sticky;left:0;z-index:2;background:inherit}
-.tbl-wrap.sticky-col th:first-child{background:var(--sidebar);z-index:3}
-.tbl-wrap.sticky-col tr:hover td:first-child{background:#FEF9E7}
-
-/* Te-form color coding */
-.te-rule{display:inline-block;padding:3px 10px;border-radius:16px;font-size:12px;font-weight:600;margin:3px 4px 3px 0}
-.te-ite{background:#DBEAFE;color:#1E40AF}
-.te-ide{background:#E0E7FF;color:#3730A3}
-.te-shite{background:#FEF3C7;color:#92400E}
-.te-nde{background:#D1FAE5;color:#065F46}
-.te-tte{background:#FCE7F3;color:#9D174D}
-
-/* Speak button */
-.spk{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;cursor:pointer;border:none;background:none;opacity:.4;transition:.2s;vertical-align:middle;padding:0;-webkit-tap-highlight-color:transparent}
-.spk:hover,.spk:active{opacity:1}
-.spk svg{width:16px;height:16px;stroke:var(--ac2);fill:none;stroke-width:2}
-
-/* Quiz section */
-.quiz-panel{background:var(--bg2);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--bd);padding:24px;margin:16px 0}
-.quiz-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.quiz-controls select,.quiz-controls button{padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;border:1px solid var(--bd);background:#fff;transition:.2s}
-.quiz-controls button{background:var(--ac2);color:#fff;border-color:var(--ac2);font-weight:600}
-.quiz-controls button:hover{opacity:.9}
-.quiz-controls button.secondary{background:#fff;color:var(--tx);border-color:var(--bd)}
-.quiz-controls button.secondary:hover{border-color:var(--ac)}
-.quiz-area{min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
-.quiz-prompt{font-family:"Noto Serif JP",serif;font-size:28px;font-weight:700;margin-bottom:6px}
-.quiz-target{font-size:16px;color:var(--ac2);font-weight:600;margin-bottom:20px}
-.quiz-input{font-size:18px;padding:10px 18px;border:2px solid var(--bd);border-radius:8px;text-align:center;width:260px;max-width:100%;font-family:"Noto Sans JP",sans-serif;transition:.2s}
-.quiz-input:focus{outline:none;border-color:var(--ac2)}
-.quiz-input.correct{border-color:#059669;background:#D1FAE5}
-.quiz-input.wrong{border-color:#DC2626;background:#FEE2E2}
-.quiz-answer{font-size:16px;margin-top:12px;font-weight:600;min-height:24px}
-.quiz-answer.correct{color:#059669}
-.quiz-answer.wrong{color:#DC2626}
-.quiz-score{font-size:14px;color:var(--tx2);margin-bottom:16px}
-.quiz-next{margin-top:16px;padding:8px 24px;background:var(--ac);color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;display:none}
-.quiz-next:hover{opacity:.9}
-.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:400px;margin-top:8px}
-.quiz-opt{padding:12px;border:2px solid var(--bd);border-radius:8px;background:#fff;cursor:pointer;font-size:15px;font-family:"Noto Sans JP",sans-serif;transition:.15s;text-align:center}
-.quiz-opt:hover{border-color:var(--ac2);background:#EFF6FF}
-.quiz-opt.correct{border-color:#059669;background:#D1FAE5}
-.quiz-opt.wrong{border-color:#DC2626;background:#FEE2E2}
-.quiz-opt.disabled{pointer-events:none}
-.quiz-mode-toggle{display:flex;gap:2px;background:#f1f5f9;border-radius:6px;padding:2px;margin-bottom:12px}
-.quiz-mode-toggle button{background:none;border:none;padding:5px 14px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;color:var(--tx2);transition:.2s}
-.quiz-mode-toggle button.on{background:#fff;color:var(--tx);box-shadow:var(--sh)}
-
-/* Pairs table */
-.pair-row{display:grid;grid-template-columns:1fr 20px 1fr;gap:0;align-items:center;padding:8px 14px;border-bottom:1px solid var(--bd)}
-.pair-row:last-child{border-bottom:none}
-.pair-row:hover{background:#FEF9E7}
-.pair-label{font-size:13px}
-.pair-label .kanji{font-family:"Noto Serif JP",serif;font-weight:700;font-size:15px}
-.pair-label .reading{font-size:11px;color:var(--ac2)}
-.pair-label .meaning{font-size:11px;color:var(--tx2)}
-.pair-arrow{text-align:center;color:var(--tx2);font-size:14px}
-.pair-header{display:grid;grid-template-columns:1fr 20px 1fr;gap:0;padding:8px 14px;background:var(--sidebar);color:#fff;font-size:12px;font-weight:600;border-radius:8px 8px 0 0}
-
-/* Scroll to top */
-.btt{position:fixed;bottom:20px;right:20px;width:44px;height:44px;border-radius:50%;background:var(--ac);color:#fff;border:none;cursor:pointer;font-size:18px;box-shadow:0 2px 8px rgba(217,119,6,.3);opacity:0;pointer-events:none;transition:.3s;z-index:150;display:flex;align-items:center;justify-content:center}
-.btt.show{opacity:1;pointer-events:auto}
-.btt:hover{transform:scale(1.05)}
-
-/* Footer */
-.ft{padding:20px;text-align:center;color:var(--tx2);font-size:11px;border-top:1px solid var(--bd)}
-.ft a{color:var(--ac2);text-decoration:none}
-
-/* Mnemonic */
-.mnemonic{background:linear-gradient(135deg,#FEF3C7,#FDE68A);border-radius:10px;padding:18px 22px;margin:16px 0;border:2px solid var(--ac);font-size:15px;line-height:2}
-.mnemonic .big{font-size:20px;font-weight:700;color:#B45309;font-family:"Noto Serif JP",serif}
-
-/* Responsive */
-@media(max-width:768px){
-  .mn{padding:calc(var(--hh) + 12px) 12px 60px}
-  .intro{padding:18px;margin-bottom:20px}
-  .intro h2{font-size:17px}
-  .card-x{padding:4px 12px 14px}
-  .quiz-prompt{font-size:22px}
-  .quiz-options{grid-template-columns:1fr 1fr}
-  table{font-size:12px}
-  th,td{padding:5px 8px}
-  .nav-pills{display:none}
-  .hd{gap:8px}
-  .pair-row{grid-template-columns:1fr 16px 1fr;padding:6px 10px}
+.nav-pills { display: flex; gap: 4px; margin-left: auto; flex-wrap: nowrap; overflow-x: auto; }
+.nav-pills::-webkit-scrollbar { display: none; }
+.nav-pills a {
+  color: var(--tx2); text-decoration: none; padding: 5px 12px;
+  border-radius: 20px; font-size: 12px; font-weight: 600;
+  transition: all .2s var(--ease); white-space: nowrap; flex-shrink: 0;
+  background: var(--bg3);
 }
-@media(max-width:480px){
-  .hd h1{font-size:14px}
-  .quiz-options{grid-template-columns:1fr}
-  .quiz-input{width:100%}
+.nav-pills a:hover, .nav-pills a.on { background: var(--ac2); color: #fff; }
+
+/* Theme toggle */
+.theme-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--tx3); padding: 6px;
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  transition: color .2s var(--ease), background .2s var(--ease);
+  flex-shrink: 0;
+}
+.theme-btn:hover { color: var(--tx); background: var(--bg3); }
+.theme-btn svg { width: 18px; height: 18px; }
+
+/* == Main == */
+.mn { max-width: 760px; margin: 0 auto; padding: calc(var(--hh) + 20px) 20px 60px; }
+
+/* == Intro banner == */
+.intro {
+  background: linear-gradient(135deg, var(--bg3) 0%, var(--bg2) 100%);
+  border: 1px solid var(--bd);
+  border-radius: 16px; padding: 24px 28px;
+  margin-bottom: 28px; position: relative; overflow: hidden;
+}
+.intro::before {
+  content: ''; position: absolute; top: -50px; right: -50px;
+  width: 160px; height: 160px;
+  background: rgba(212,101,74,.06);
+  border-radius: 50%; filter: blur(60px);
+}
+[data-theme="dark"] .intro::before { background: rgba(232,115,74,.04); }
+.intro h2 { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: var(--tx); }
+.intro p { color: var(--tx2); font-size: 14px; line-height: 1.8; }
+.intro .tg { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
+.intro .tg span {
+  background: var(--bg2); color: var(--tx2);
+  padding: 4px 12px; border-radius: 20px; font-size: 11px;
+  border: 1px solid var(--bd);
+}
+
+/* == Sections == */
+.sec { margin-bottom: 40px; }
+.sec > h2 {
+  font-size: 17px; font-weight: 700; margin-bottom: 16px;
+  padding-bottom: 8px; border-bottom: 2px solid var(--ac);
+  display: flex; align-items: center; gap: 8px;
+}
+.sec > h2 .icon {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; flex-shrink: 0; background: var(--ac2); color: #fff; font-weight: 700;
+}
+
+/* == Cards == */
+.card {
+  background: var(--bg2); border-radius: var(--r);
+  box-shadow: var(--sh); margin-bottom: 8px; overflow: hidden;
+  border: 1px solid var(--bd); transition: border-color .2s var(--ease);
+}
+[data-theme="dark"] .card { box-shadow: none; }
+.card:hover { border-color: var(--ac2); }
+.card-h {
+  padding: 14px 16px; cursor: pointer;
+  display: flex; align-items: center; gap: 10px;
+  user-select: none; transition: background .15s var(--ease);
+}
+.card-h:hover { background: var(--bg3); }
+.card-h .tag {
+  background: var(--ac2); color: #fff;
+  min-width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.card-h .tag.g1 { background: #059669; }
+.card-h .tag.g2 { background: var(--ac2); }
+.card-h .tag.g3 { background: #DC2626; }
+.card-h .title { font-size: 15px; font-weight: 700; flex: 1; }
+.card-h .arr {
+  width: 18px; height: 18px; transition: transform .2s var(--ease);
+  stroke: var(--tx3); flex-shrink: 0;
+}
+.card.open .arr { transform: rotate(180deg); }
+.card-b { max-height: 0; overflow: hidden; transition: max-height .4s var(--ease); }
+.card.open .card-b { max-height: 8000px; }
+.card-x { padding: 4px 16px 16px; border-top: 1px solid var(--bd); }
+
+/* == Alert boxes == */
+.tip {
+  background: var(--note-bg); border-radius: 8px; padding: 10px 14px;
+  margin: 12px 0; font-size: 13px; color: var(--note-tx);
+  border-left: 3px solid var(--ac); line-height: 1.8;
+}
+.tip strong { color: var(--em-color); }
+.danger {
+  background: var(--wrong-bg); border-radius: 8px; padding: 10px 14px;
+  margin: 12px 0; font-size: 13px; color: var(--wrong-tx);
+  border-left: 3px solid var(--wrong-bd); line-height: 1.8;
+}
+.info {
+  background: rgba(74,127,212,.08); border-radius: 8px; padding: 10px 14px;
+  margin: 12px 0; font-size: 13px; color: var(--ac2);
+  border-left: 3px solid var(--ac2); line-height: 1.8;
+}
+[data-theme="dark"] .info { background: rgba(107,168,245,.08); }
+
+/* == Tables == */
+.tbl-wrap { overflow-x: auto; margin: 12px 0; border-radius: 10px; border: 1px solid var(--bd); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th {
+  background: var(--bg3); color: var(--tx2); padding: 8px 12px;
+  text-align: left; font-size: 12px; font-weight: 600;
+  white-space: nowrap; position: sticky; top: 0;
+  border-bottom: 1px solid var(--bd);
+}
+[data-theme="dark"] th { background: var(--bg3); color: var(--tx2); }
+td { padding: 7px 12px; border-bottom: 1px solid var(--bd); white-space: nowrap; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg3); }
+td.vb { font-weight: 700; color: var(--ac2); }
+td.hl { color: var(--em-color); font-weight: 600; }
+.tbl-wrap.sticky-col td:first-child,
+.tbl-wrap.sticky-col th:first-child { position: sticky; left: 0; z-index: 2; background: inherit; }
+.tbl-wrap.sticky-col th:first-child { z-index: 3; }
+
+/* == Te-form color coding == */
+.te-rule { display: inline-block; padding: 3px 10px; border-radius: 16px; font-size: 12px; font-weight: 600; margin: 3px 4px 3px 0; }
+.te-ite { background: rgba(74,127,212,.12); color: var(--ac2); }
+.te-ide { background: rgba(74,127,212,.08); color: var(--ac2); }
+.te-shite { background: var(--note-bg); color: var(--note-tx); }
+.te-nde { background: rgba(5,150,105,.08); color: #059669; }
+.te-tte { background: rgba(212,101,74,.08); color: var(--ac); }
+[data-theme="dark"] .te-ite { background: rgba(107,168,245,.15); }
+[data-theme="dark"] .te-ide { background: rgba(107,168,245,.1); }
+[data-theme="dark"] .te-nde { background: rgba(52,211,153,.1); color: #34d399; }
+[data-theme="dark"] .te-tte { background: rgba(232,115,74,.12); }
+
+/* == Speak button == */
+.spk {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; cursor: pointer; border: none;
+  background: none; opacity: .4; transition: opacity .2s var(--ease);
+  vertical-align: middle; padding: 0;
+}
+.spk:hover, .spk:active { opacity: 1; }
+.spk svg { width: 16px; height: 16px; stroke: var(--ac2); fill: none; stroke-width: 2; }
+
+/* == Quiz == */
+.quiz-panel {
+  background: var(--bg2); border-radius: var(--r);
+  box-shadow: var(--sh); border: 1px solid var(--bd); padding: 24px; margin: 16px 0;
+}
+[data-theme="dark"] .quiz-panel { box-shadow: none; }
+.quiz-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.quiz-controls select, .quiz-controls button {
+  padding: 6px 14px; border-radius: 10px; font-size: 13px;
+  cursor: pointer; border: 1px solid var(--bd);
+  background: var(--bg2); color: var(--tx); transition: all .2s var(--ease);
+}
+.quiz-controls button {
+  background: var(--ac2); color: #fff; border-color: var(--ac2); font-weight: 600;
+}
+.quiz-controls button:hover { opacity: .9; }
+.quiz-controls button.secondary { background: var(--bg2); color: var(--tx); border-color: var(--bd); }
+.quiz-controls button.secondary:hover { border-color: var(--ac); }
+.quiz-area {
+  min-height: 200px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center; padding: 20px;
+}
+.quiz-prompt { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+.quiz-target { font-size: 16px; color: var(--ac2); font-weight: 600; margin-bottom: 20px; }
+.quiz-input {
+  font-size: 18px; padding: 10px 18px; border: 2px solid var(--bd);
+  border-radius: 10px; text-align: center; width: 260px; max-width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg2); color: var(--tx); transition: border-color .2s var(--ease);
+}
+.quiz-input:focus { outline: none; border-color: var(--ac2); }
+.quiz-input.correct { border-color: var(--correct-bd); background: var(--correct-bg); }
+.quiz-input.wrong { border-color: var(--wrong-bd); background: var(--wrong-bg); }
+.quiz-answer { font-size: 16px; margin-top: 12px; font-weight: 600; min-height: 24px; }
+.quiz-answer.correct { color: var(--correct-tx); }
+.quiz-answer.wrong { color: var(--wrong-tx); }
+.quiz-score { font-size: 14px; color: var(--tx2); margin-bottom: 16px; }
+.quiz-next {
+  margin-top: 16px; padding: 8px 24px; background: var(--ac);
+  color: #fff; border: none; border-radius: 10px; font-size: 14px;
+  font-weight: 600; cursor: pointer; display: none;
+}
+.quiz-next:hover { opacity: .9; }
+.quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; max-width: 400px; margin-top: 8px; }
+.quiz-opt {
+  padding: 12px; border: 2px solid var(--bd); border-radius: 10px;
+  background: var(--bg2); cursor: pointer; font-size: 15px;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  color: var(--tx); transition: all .15s var(--ease); text-align: center;
+}
+.quiz-opt:hover { border-color: var(--ac2); background: var(--bg3); }
+.quiz-opt.correct { border-color: var(--correct-bd); background: var(--correct-bg); color: var(--correct-tx); }
+.quiz-opt.wrong { border-color: var(--wrong-bd); background: var(--wrong-bg); color: var(--wrong-tx); }
+.quiz-opt.disabled { pointer-events: none; }
+.quiz-mode-toggle { display: flex; gap: 2px; background: var(--bg3); border-radius: 10px; padding: 2px; margin-bottom: 12px; }
+.quiz-mode-toggle button {
+  background: none; border: none; padding: 5px 14px; border-radius: 8px;
+  cursor: pointer; font-size: 12px; font-weight: 600; color: var(--tx2); transition: all .2s var(--ease);
+}
+.quiz-mode-toggle button.on { background: var(--bg2); color: var(--tx); box-shadow: var(--sh); }
+
+/* == Pairs == */
+.pair-header {
+  display: grid; grid-template-columns: 1fr 20px 1fr; gap: 0;
+  padding: 8px 14px; background: var(--bg3); color: var(--tx2);
+  font-size: 12px; font-weight: 600; border-radius: 10px 10px 0 0;
+  border: 1px solid var(--bd); border-bottom: none;
+}
+.pair-row {
+  display: grid; grid-template-columns: 1fr 20px 1fr; gap: 0;
+  align-items: center; padding: 8px 14px; border-bottom: 1px solid var(--bd);
+}
+.pair-row:last-child { border-bottom: none; }
+.pair-row:hover { background: var(--bg3); }
+.pair-label { font-size: 13px; }
+.pair-label .kanji { font-weight: 700; font-size: 15px; }
+.pair-label .reading { font-size: 11px; color: var(--ac2); }
+.pair-label .meaning { font-size: 11px; color: var(--tx2); }
+.pair-arrow { text-align: center; color: var(--tx2); font-size: 14px; }
+
+/* == Mnemonic == */
+.mnemonic {
+  background: linear-gradient(135deg, var(--note-bg), rgba(212,101,74,.06));
+  border-radius: 12px; padding: 18px 22px; margin: 16px 0;
+  border: 2px solid var(--ac); font-size: 15px; line-height: 2;
+}
+[data-theme="dark"] .mnemonic { background: linear-gradient(135deg, var(--note-bg), rgba(232,115,74,.06)); }
+.mnemonic .big { font-size: 20px; font-weight: 700; color: var(--em-color); }
+
+/* == Back to top == */
+.bt {
+  position: fixed; bottom: 20px; right: 20px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--ac); color: #fff; border: none;
+  cursor: pointer; font-size: 16px;
+  box-shadow: 0 2px 8px rgba(212,101,74,.25);
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s var(--ease);
+  z-index: 150; display: flex; align-items: center; justify-content: center;
+}
+.bt.s { opacity: 1; pointer-events: auto; }
+.bt:hover { box-shadow: 0 4px 12px rgba(212,101,74,.35); }
+
+/* == Footer == */
+.ft {
+  padding: 32px 20px; text-align: center; color: var(--tx3);
+  font-size: 12px; border-top: 1px solid var(--bd); background: var(--bg);
+  line-height: 1.9;
+}
+.ft a { color: var(--ac2); text-decoration: none; }
+.ft a:hover { text-decoration: underline; }
+
+/* == Responsive == */
+@media(max-width:768px) {
+  .mn { padding: calc(var(--hh) + 12px) 12px 60px; }
+  .intro { padding: 18px; margin-bottom: 20px; }
+  .intro h2 { font-size: 17px; }
+  .card-x { padding: 4px 12px 14px; }
+  .quiz-prompt { font-size: 22px; }
+  table { font-size: 12px; }
+  th, td { padding: 5px 8px; }
+  .nav-pills { display: none; }
+  .pair-row { grid-template-columns: 1fr 16px 1fr; padding: 6px 10px; }
+}
+@media(max-width:480px) {
+  .hd-top h1 { font-size: 14px; }
+  .quiz-options { grid-template-columns: 1fr; }
+  .quiz-input { width: 100%; }
 }
 </style>
 </head>
 <body>
 
 <header class="hd">
-  <a href="index.html" class="back">&#8592; 首頁</a>
-  <h1>日本再留計劃<span>動詞變化</span></h1>
-  <nav class="nav-pills">
-    <a href="#groups" class="on">分類</a>
-    <a href="#conjugation">變化表</a>
-    <a href="#te-form">て形</a>
-    <a href="#quiz">練習</a>
-    <a href="#pairs">自他動詞</a>
-  </nav>
+  <div class="hd-top">
+    <a href="index.html" class="back-link"><svg style="width:12px;height:12px;vertical-align:-1px;margin-right:2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>首頁</a>
+    <h1>日本再留計劃<span>動詞變化</span></h1>
+    <nav class="nav-pills">
+      <a href="#groups" class="on">分類</a>
+      <a href="#conjugation">變化表</a>
+      <a href="#te-form">て形</a>
+      <a href="#quiz">練習</a>
+      <a href="#pairs">自他動詞</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" aria-label="切換深色模式"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg></button>
+  </div>
 </header>
 
 <main class="mn">
@@ -189,7 +418,13 @@ td.hl{color:#B45309;font-weight:600}
 <!-- Hero -->
 <div class="intro">
   <h2>動詞變化完全攻略</h2>
-  <p>日語動詞變化是最重要也最令人頭痛的文法基礎。本頁涵蓋三類動詞的所有變化形、て形音變規則、陷阱動詞列表，以及互動練習工具。掌握這些，N2 文法就有了穩固的抓手。</p>
+  <p>日語動詞變化是最重要也最令人頭痛的文法基礎。本頁涵蓋三類動詞的所有變化形、て形音變規則、陷阱動詞列表，以及互動練習工具。掌握這些，N2 文法就有了穩固的基礎。</p>
+  <div class="tg">
+    <span>12 種變化形</span>
+    <span>て形音變</span>
+    <span>自他動詞</span>
+    <span>互動練習</span>
+  </div>
 </div>
 
 <!-- ===== Section 1: 動詞分類 ===== -->
@@ -347,7 +582,7 @@ td.hl{color:#B45309;font-weight:600}
   <div class="card" id="card-te-ta">
     <div class="card-h" onclick="toggleCard('card-te-ta')">
       <span class="tag">て</span>
-      <span class="title">て形 ＆ た形（連接 / 過去）</span>
+      <span class="title">て形 &amp; た形（連接 / 過去）</span>
       <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="card-b"><div class="card-x">
@@ -412,7 +647,7 @@ td.hl{color:#B45309;font-weight:600}
       <div class="info"><strong>規則：</strong>一段＝去る＋よう ｜ 五段＝う段→お段＋う ｜ する→しよう ｜ 来る→こよう</div>
       <div class="tbl-wrap sticky-col"><table>
         <tr><th>辞書形</th><th>類</th><th>意向形</th><th>用法</th></tr>
-        <tr><td class="vb">書く</td><td>五</td><td>書こう</td><td rowspan="9">「～しよう」＝Let's ～ / I'll ～</td></tr>
+        <tr><td class="vb">書く</td><td>五</td><td>書こう</td><td rowspan="9">「〜しよう」＝Let's 〜 / I'll 〜</td></tr>
         <tr><td class="vb">飲む</td><td>五</td><td>飲もう</td></tr>
         <tr><td class="vb">話す</td><td>五</td><td>話そう</td></tr>
         <tr><td class="vb">買う</td><td>五</td><td>買おう</td></tr>
@@ -620,7 +855,7 @@ td.hl{color:#B45309;font-weight:600}
 
   <div class="card open" id="card-te-rules">
     <div class="card-h" onclick="toggleCard('card-te-rules')">
-      <span class="tag" style="background:#B45309">核</span>
+      <span class="tag" style="background:var(--em-color)">核</span>
       <span class="title">五段動詞 て形 五大音變規則</span>
       <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
@@ -652,7 +887,7 @@ td.hl{color:#B45309;font-weight:600}
   <!-- Mnemonic -->
   <div class="card open" id="card-mnemonic">
     <div class="card-h" onclick="toggleCard('card-mnemonic')">
-      <span class="tag" style="background:#B45309">記</span>
+      <span class="tag" style="background:var(--em-color)">記</span>
       <span class="title">記憶口訣</span>
       <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
@@ -664,10 +899,10 @@ td.hl{color:#B45309;font-weight:600}
         <span class="te-rule te-shite">す → して</span> ← す就是し（同行）<br>
         <span class="te-rule te-nde">む・ぶ・ぬ → んで</span> ← 嘴巴閉起來的音（m/b/n）變「ん」<br>
         <span class="te-rule te-tte">う・つ・る → って</span> ← 其餘全部變「っ」促音<br><br>
-        <strong>口訣：</strong>「<span style="color:#B45309;font-size:17px">く・ぐ 一對，す 獨行，嘴閉（む・ぶ・ぬ）撥音，剩下促音</span>」<br><br>
+        <strong>口訣：</strong>「<span style="color:var(--em-color);font-size:17px">く・ぐ 一對，す 獨行，嘴閉（む・ぶ・ぬ）撥音，剩下促音</span>」<br><br>
         <strong>日語歌訣（配「きらきら星」旋律）：</strong><br>
-        いて、いで、して、んで、って～<br>
-        く、ぐ、す、む・ぶ・ぬ、う・つ・る～
+        いて、いで、して、んで、って〜<br>
+        く、ぐ、す、む・ぶ・ぬ、う・つ・る〜
       </div>
 
       <div class="info" style="margin-top:12px">
@@ -680,7 +915,7 @@ td.hl{color:#B45309;font-weight:600}
   <!-- Practice examples -->
   <div class="card" id="card-te-practice">
     <div class="card-h" onclick="toggleCard('card-te-practice')">
-      <span class="tag" style="background:#B45309">練</span>
+      <span class="tag" style="background:var(--em-color)">練</span>
       <span class="title">て形練習例句</span>
       <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
@@ -762,125 +997,125 @@ td.hl{color:#B45309;font-weight:600}
         <span></span>
         <span>他動詞（及物）</span>
       </div>
-      <div style="background:var(--bg2);border:1px solid var(--bd);border-top:none;border-radius:0 0 8px 8px">
+      <div style="background:var(--bg2);border:1px solid var(--bd);border-top:none;border-radius:0 0 10px 10px">
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">開く</span> <span class="reading">あく</span><br><span class="meaning">（自然）打開</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">開ける</span> <span class="reading">あける</span><br><span class="meaning">（人）打開</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">閉まる</span> <span class="reading">しまる</span><br><span class="meaning">（自然）關上</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">閉める</span> <span class="reading">しめる</span><br><span class="meaning">（人）關上</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">始まる</span> <span class="reading">はじまる</span><br><span class="meaning">（自然）開始</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">始める</span> <span class="reading">はじめる</span><br><span class="meaning">（人）開始</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">決まる</span> <span class="reading">きまる</span><br><span class="meaning">（自然）決定</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">決める</span> <span class="reading">きめる</span><br><span class="meaning">（人）決定</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">集まる</span> <span class="reading">あつまる</span><br><span class="meaning">聚集</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">集める</span> <span class="reading">あつめる</span><br><span class="meaning">收集</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">変わる</span> <span class="reading">かわる</span><br><span class="meaning">（自然）改變</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">変える</span> <span class="reading">かえる</span><br><span class="meaning">（人）改變</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">上がる</span> <span class="reading">あがる</span><br><span class="meaning">上升</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">上げる</span> <span class="reading">あげる</span><br><span class="meaning">提高、舉起</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">下がる</span> <span class="reading">さがる</span><br><span class="meaning">下降</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">下げる</span> <span class="reading">さげる</span><br><span class="meaning">降低、放下</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">見つかる</span> <span class="reading">みつかる</span><br><span class="meaning">被找到</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">見つける</span> <span class="reading">みつける</span><br><span class="meaning">找到</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">壊れる</span> <span class="reading">こわれる</span><br><span class="meaning">壞掉</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">壊す</span> <span class="reading">こわす</span><br><span class="meaning">弄壞</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">消える</span> <span class="reading">きえる</span><br><span class="meaning">消失、熄滅</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">消す</span> <span class="reading">けす</span><br><span class="meaning">消除、關掉</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">付く</span> <span class="reading">つく</span><br><span class="meaning">附著、開啟</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">付ける</span> <span class="reading">つける</span><br><span class="meaning">貼上、打開</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">止まる</span> <span class="reading">とまる</span><br><span class="meaning">停下</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">止める</span> <span class="reading">とめる</span><br><span class="meaning">停止</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">入る</span> <span class="reading">はいる</span><br><span class="meaning">進入</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">入れる</span> <span class="reading">いれる</span><br><span class="meaning">放入</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">出る</span> <span class="reading">でる</span><br><span class="meaning">出去、出現</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">出す</span> <span class="reading">だす</span><br><span class="meaning">拿出</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">落ちる</span> <span class="reading">おちる</span><br><span class="meaning">掉落</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">落とす</span> <span class="reading">おとす</span><br><span class="meaning">弄掉</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">届く</span> <span class="reading">とどく</span><br><span class="meaning">送到</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">届ける</span> <span class="reading">とどける</span><br><span class="meaning">送達</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">直る</span> <span class="reading">なおる</span><br><span class="meaning">修好、恢復</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">直す</span> <span class="reading">なおす</span><br><span class="meaning">修理</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">起きる</span> <span class="reading">おきる</span><br><span class="meaning">起床、發生</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">起こす</span> <span class="reading">おこす</span><br><span class="meaning">叫醒、引起</span></div>
         </div>
 
         <div class="pair-row">
           <div class="pair-label"><span class="kanji">育つ</span> <span class="reading">そだつ</span><br><span class="meaning">長大</span></div>
-          <div class="pair-arrow">⇄</div>
+          <div class="pair-arrow">&#8644;</div>
           <div class="pair-label"><span class="kanji">育てる</span> <span class="reading">そだてる</span><br><span class="meaning">養育</span></div>
         </div>
 
@@ -910,52 +1145,69 @@ td.hl{color:#B45309;font-weight:600}
 
 </main>
 
-<button class="btt" id="btt" onclick="scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+<button class="bt" id="bt" onclick="scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
 
 <footer class="ft">
   再留計劃 &mdash; <a href="index.html">回首頁</a>
 </footer>
 
 <script>
-// ============================================================
-// Card toggle
-// ============================================================
+// ========== THEME ==========
+function initTheme() {
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+  updateThemeIcon();
+}
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+  updateThemeIcon();
+}
+function updateThemeIcon() {
+  const btn = document.getElementById('themeBtn');
+  if (!btn) return;
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  btn.innerHTML = isDark
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>';
+}
+initTheme();
+
+// ========== CARD TOGGLE ==========
 function toggleCard(id) {
   document.getElementById(id).classList.toggle('open');
 }
 
-// ============================================================
-// TTS speak
-// ============================================================
+// ========== TTS ==========
 function speak(text) {
   if (!('speechSynthesis' in window)) return;
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'ja-JP';
   u.rate = 0.85;
-  // Try to find a Japanese voice
   const voices = speechSynthesis.getVoices();
   const ja = voices.find(v => v.lang.startsWith('ja'));
   if (ja) u.voice = ja;
   speechSynthesis.speak(u);
 }
-// Preload voices
 if ('speechSynthesis' in window) {
   speechSynthesis.getVoices();
   speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
 }
 
-// ============================================================
-// Scroll-to-top button
-// ============================================================
-const btt = document.getElementById('btt');
+// ========== SCROLL TO TOP ==========
+const bt = document.getElementById('bt');
 window.addEventListener('scroll', () => {
-  btt.classList.toggle('show', window.scrollY > 300);
+  bt.classList.toggle('s', window.scrollY > 300);
 });
 
-// ============================================================
-// Nav pills active state
-// ============================================================
+// ========== NAV PILLS ==========
 const pills = document.querySelectorAll('.nav-pills a');
 const sections = ['groups', 'conjugation', 'te-form', 'quiz', 'pairs'].map(id => document.getElementById(id));
 window.addEventListener('scroll', () => {
@@ -966,11 +1218,8 @@ window.addEventListener('scroll', () => {
   pills.forEach((p, i) => p.classList.toggle('on', i === current));
 });
 
-// ============================================================
-// Conjugation Data
-// ============================================================
+// ========== CONJUGATION DATA ==========
 const VERBS = [
-  // Godan verbs
   { dict:'書く', reading:'かく', group:'godan', ending:'く',
     masu:'書きます', te:'書いて', nai:'書かない', ta:'書いた',
     volitional:'書こう', potential:'書ける', passive:'書かれる',
@@ -1016,7 +1265,6 @@ const VERBS = [
     volitional:'泳ごう', potential:'泳げる', passive:'泳がれる',
     causative:'泳がせる', causpass:'泳がせられる',
     imperative:'泳げ', conditional:'泳げば', prohibitive:'泳ぐな' },
-  // Ichidan verbs
   { dict:'食べる', reading:'たべる', group:'ichidan', ending:'る',
     masu:'食べます', te:'食べて', nai:'食べない', ta:'食べた',
     volitional:'食べよう', potential:'食べられる', passive:'食べられる',
@@ -1037,7 +1285,6 @@ const VERBS = [
     volitional:'教えよう', potential:'教えられる', passive:'教えられる',
     causative:'教えさせる', causpass:'教えさせられる',
     imperative:'教えろ', conditional:'教えれば', prohibitive:'教えるな' },
-  // Irregular
   { dict:'する', reading:'する', group:'irregular', ending:'する',
     masu:'します', te:'して', nai:'しない', ta:'した',
     volitional:'しよう', potential:'できる', passive:'される',
@@ -1059,11 +1306,9 @@ const FORM_NAMES = {
 
 const FORM_KEYS = Object.keys(FORM_NAMES);
 
-// ============================================================
-// Quiz State
-// ============================================================
+// ========== QUIZ ==========
 let quizState = {
-  mode: 'select', // 'select' or 'type'
+  mode: 'select',
   correct: 0,
   total: 0,
   currentVerb: null,
@@ -1116,7 +1361,7 @@ function startQuiz() {
   if (quizState.mode === 'type') {
     area.innerHTML = `
       <div class="quiz-prompt">${verb.dict}</div>
-      <div class="quiz-target">→ ${FORM_NAMES[formKey]}</div>
+      <div class="quiz-target">\u2192 ${FORM_NAMES[formKey]}</div>
       <input class="quiz-input" id="quizInput" type="text" placeholder="輸入答案..." autocomplete="off" autofocus>
       <div class="quiz-answer" id="quizAnswer"></div>
       <button class="quiz-next" id="quizNext" onclick="startQuiz()">下一題</button>
@@ -1125,17 +1370,15 @@ function startQuiz() {
     input.addEventListener('keydown', e => {
       if (e.key === 'Enter') checkTypedAnswer(answer);
     });
-    // Also allow pressing Enter on next question
     input.focus();
   } else {
-    // Generate options
     const options = generateOptions(verb, formKey, answer);
     let optionsHtml = options.map(opt =>
       `<button class="quiz-opt" onclick="checkSelectedAnswer(this,'${escHtml(answer)}')">${opt}</button>`
     ).join('');
     area.innerHTML = `
       <div class="quiz-prompt">${verb.dict}</div>
-      <div class="quiz-target">→ ${FORM_NAMES[formKey]}</div>
+      <div class="quiz-target">\u2192 ${FORM_NAMES[formKey]}</div>
       <div class="quiz-options">${optionsHtml}</div>
       <div class="quiz-answer" id="quizAnswer"></div>
       <button class="quiz-next" id="quizNext" onclick="startQuiz()">下一題</button>
@@ -1149,14 +1392,12 @@ function escHtml(s) {
 
 function generateOptions(verb, formKey, correct) {
   const allAnswers = VERBS.map(v => v[formKey]).filter(a => a !== correct);
-  // Shuffle and pick 3 wrong answers
   for (let i = allAnswers.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [allAnswers[i], allAnswers[j]] = [allAnswers[j], allAnswers[i]];
   }
   const wrong = allAnswers.slice(0, 3);
   const opts = [correct, ...wrong];
-  // Shuffle options
   for (let i = opts.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [opts[i], opts[j]] = [opts[j], opts[i]];
@@ -1223,7 +1464,6 @@ function updateScore() {
   document.getElementById('quizScore').textContent =
     `答對 ${quizState.correct} / ${quizState.total}（${pct}%）`;
 }
-
 </script>
 </body>
 </html>
