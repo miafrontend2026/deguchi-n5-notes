@@ -1683,17 +1683,19 @@ function closeDrawer() {
   document.querySelectorAll('.drawer-bg').forEach(d => d.classList.remove('show'));
 }
 function drawerAction(action) {
-  // Hide drawer immediately, then run action
   document.querySelectorAll('.drawer-bg').forEach(d => d.classList.remove('show'));
-  requestAnimationFrame(() => {
-    if (action === 'stats') Stats.open();
-    else if (action === 'notebook') { Stats.open(); requestAnimationFrame(() => Stats.switchTab('notebook')); }
-    else if (action === 'history') { Stats.open(); requestAnimationFrame(() => Stats.switchTab('history')); }
-    else if (action === 'srs') SRS.start();
-    else if (action === 'grammar') GrammarDrill.start();
-    else if (action === 'reading') Reading.start();
-    else if (action === 'listening') Listening.start();
-  });
+  // Use longer delay to ensure drawer is fully hidden before opening overlay
+  window.setTimeout(function() {
+    switch(action) {
+      case 'stats': if(typeof Stats!=='undefined') Stats.open(); break;
+      case 'notebook': if(typeof Stats!=='undefined'){ Stats.open(); window.setTimeout(function(){ Stats.switchTab('notebook'); },150); } break;
+      case 'history': if(typeof Stats!=='undefined'){ Stats.open(); window.setTimeout(function(){ Stats.switchTab('history'); },150); } break;
+      case 'srs': if(typeof SRS!=='undefined') SRS.start(); break;
+      case 'grammar': if(typeof GrammarDrill!=='undefined') GrammarDrill.start(); break;
+      case 'reading': if(typeof Reading!=='undefined') Reading.start(); break;
+      case 'listening': if(typeof Listening!=='undefined') Listening.start(); break;
+    }
+  }, 350);
 }
 function switchBottomTab(btn) {
   document.querySelectorAll('.ftb-btn').forEach(b => b.classList.remove('on'));
