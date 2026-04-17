@@ -40,11 +40,14 @@ const GrammarDrill = (() => {
   function start() {
     const box = document.getElementById('quizBox');
     box.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><h3 style="margin:0">文法記憶練習</h3><button class="qclose" style="width:auto;margin:0;padding:2px 10px" onclick="GrammarDrill.close()">✕</button></div>
-      <p style="font-size:13px;color:#64748B;margin-bottom:12px">看文法名稱 → 回想接續方式和意思 → 翻面核對</p>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><h3 style="margin:0">文法練習</h3><button class="qclose" style="width:auto;margin:0;padding:2px 10px" onclick="GrammarDrill.close()">✕</button></div>
+      <div class="qf"><label>模式</label><div class="qo" id="gdMode">
+        <button class="on" data-v="flash">翻牌記憶</button>
+        <button data-v="quiz">選擇題測驗</button>
+      </div></div>
       <div class="qf"><label>級別</label><div class="qo" id="gdLevel">
         <button class="on" data-v="n5">N5</button><button data-v="n4">N4</button>
-        <button data-v="n3">N3</button><button data-v="n2">N2</button>
+        <button data-v="n3">N3</button><button data-v="n2">N2</button><button data-v="n1">N1</button>
       </div></div>
       <div class="qf"><label>範圍</label><div class="qo" id="gdRange">
         <button data-v="due" class="on">待複習</button>
@@ -61,9 +64,14 @@ const GrammarDrill = (() => {
     document.getElementById('quizBg').classList.add('show');
   }
 
+  let quizMode = 'flash';
   function begin() {
-    lvl = document.querySelector('#gdLevel .on').dataset.v;
-    const range = document.querySelector('#gdRange .on').dataset.v;
+    const modeEl = document.querySelector('#gdMode .on');
+    quizMode = modeEl ? modeEl.dataset.v : quizMode;
+    const lvEl = document.querySelector('#gdLevel .on');
+    if (lvEl) lvl = lvEl.dataset.v;
+    const rangeEl = document.querySelector('#gdRange .on');
+    const range = rangeEl ? rangeEl.dataset.v : 'all';
     const data = getData(lvl);
     if (!data || !data.length) { alert('此級別無文法資料'); return; }
     const srs = getSRS();
@@ -86,6 +94,8 @@ const GrammarDrill = (() => {
 
     if (!queue.length) { alert('沒有符合條件的文法點！'); return; }
     cur = 0;
+    gqScore = 0; gqResults = [];
+    if (quizMode === 'quiz') { renderQuizQ(); return; }
     renderCard();
   }
 
@@ -137,7 +147,41 @@ const GrammarDrill = (() => {
       <div class="qactions"><button class="qstart" onclick="GrammarDrill.begin()">再來一輪</button><button class="qclose" onclick="GrammarDrill.close()">返回</button></div>`;
   }
 
+  // ── Grammar Quiz Mode (multiple choice) ──
+  let gqScore = 0, gqResults = [];
+  function renderQuizQ() {
+    const g = queue[cur];
+    const allGrammar = getData(lvl);
+    const wrong = allGrammar.filter(x => x.id !== g.id).sort(() => Math.random() - 0.5).slice(0, 3);
+    const options = [g, ...wrong].sort(() => Math.random() - 0.5);
+    const correctIdx = options.indexOf(g);
+    // Show example sentence with grammar blanked out
+    const eg = g.eg[0];
+    const blanked = eg.j.replace(/<em>(.*?)<\/em>/, '＿＿＿＿');
+    document.getElementById('quizBox').innerHTML = `
+      <div class="qhd"><span>文法測驗 ${cur+1} / ${queue.length}</span><span>正確: ${gqScore}</span><button class="qclose" style="width:auto;margin:0;padding:2px 10px" onclick="GrammarDrill.close()">✕</button></div>
+      <div class="qprompt"><div style="font-size:16px;line-height:1.8;color:var(--tx)">${blanked}</div><div style="font-size:12px;color:var(--tx2);margin-top:4px">${eg.z}</div></div>
+      <div class="qopts">${options.map((o, i) => '<button class="qopt" onclick="GrammarDrill.answerQuiz('+i+','+correctIdx+')">'+o.t+'</button>').join('')}</div>`;
+  }
+  function answerQuiz(idx, correctIdx) {
+    const g = queue[cur];
+    const correct = idx === correctIdx;
+    if (correct) gqScore++;
+    record(g.id, correct);
+    if (typeof Calendar !== 'undefined') Calendar.logActivity('grammar');
+    const opts = document.querySelectorAll('.qopt');
+    opts.forEach((b, i) => { b.disabled = true; if (i === correctIdx) b.classList.add('qcorrect'); if (i === idx && !correct) b.classList.add('qwrong'); });
+    setTimeout(() => { cur++; cur >= queue.length ? showQuizResults() : renderQuizQ(); }, correct ? 500 : 1000);
+  }
+  function showQuizResults() {
+    const pct = Math.round(gqScore / queue.length * 100);
+    document.getElementById('quizBox').innerHTML = `
+      <h3>文法測驗結果</h3>
+      <div class="qscore ${pct>=80?'good':pct>=60?'ok':'bad'}">${gqScore} / ${queue.length}（${pct}%）</div>
+      <div class="qactions"><button class="qstart" onclick="GrammarDrill.begin()">再來一次</button><button class="qclose" onclick="GrammarDrill.close()">返回</button></div>`;
+  }
+
   function close() { document.getElementById('quizBg').classList.remove('show'); }
 
-  return { start, begin, flip, rate, close };
+  return { start, begin, flip, rate, answerQuiz, close };
 })();

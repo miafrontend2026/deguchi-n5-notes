@@ -34,9 +34,13 @@ const Quiz = (() => {
   }
 
   function begin() {
-    quizLevel = document.querySelector('#qLevel .on').dataset.v;
-    quizType = document.querySelector('#qType .on').dataset.v;
-    const count = parseInt(document.querySelector('#qCount .on').dataset.v);
+    const lvEl = document.querySelector('#qLevel .on');
+    const tyEl = document.querySelector('#qType .on');
+    const ctEl = document.querySelector('#qCount .on');
+    // If called from results page (no selectors), reuse last settings
+    if (lvEl) quizLevel = lvEl.dataset.v;
+    if (tyEl) quizType = tyEl.dataset.v;
+    const count = ctEl ? parseInt(ctEl.dataset.v) : (questions.length || 20);
     const data = getVocabData(quizLevel);
     if (!data || !data.length) { alert('此級別無單字資料'); return; }
     score = 0; current = 0; results = [];
@@ -83,6 +87,7 @@ const Quiz = (() => {
     if (correct) score++;
     results.push({ word: q.word, correct, chosenIdx: idx, options: q.options, correctIdx: q.correctIdx });
     if (typeof SRS !== 'undefined' && SRS.record) SRS.record(quizLevel, q.word.w, correct);
+    if (!correct && typeof Stats !== 'undefined' && Stats.addToNotebook) Stats.addToNotebook(q.word.w, q.word.r, q.word.m, quizLevel);
     const opts = document.querySelectorAll('.qopt');
     opts.forEach((b, i) => { b.disabled = true; if (i === q.correctIdx) b.classList.add('qcorrect'); if (i === idx && !correct) b.classList.add('qwrong'); });
     setTimeout(() => { current++; current >= questions.length ? showResults() : renderQ(); }, correct ? 500 : 1000);
