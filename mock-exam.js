@@ -7,6 +7,7 @@ const MockExam = (() => {
   let answers = [];
   let startTime = 0;
   let sectionStart = 0;
+  let examStartTime = 0;
   let timerInterval = null;
   let sectionTimeLimit = 0; // ms
 
@@ -191,6 +192,7 @@ const MockExam = (() => {
     currentSection = 0;
     currentQ = 0;
     answers = [];
+    examStartTime = Date.now();
 
     // Generate both sections
     sections.push(generateVocabSection(examLevel, vocab));
@@ -640,7 +642,7 @@ const MockExam = (() => {
     const finalPass = passed && sectionPass;
 
     // Calculate total elapsed time
-    const totalElapsed = Date.now() - (startTime || Date.now());
+    const totalElapsed = Date.now() - (examStartTime || Date.now());
     const mins = Math.floor(totalElapsed / 60000);
     const secs = Math.floor((totalElapsed % 60000) / 1000);
     const timeStr = mins + ':' + (secs < 10 ? '0' : '') + secs;
