@@ -888,21 +888,21 @@ body {
 
 <header class="hd">
   <div class="hd-top">
-    <button class="menu-btn" onclick="toggleSd()" aria-label="選單"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
-    <h1>日本再留計劃</h1><span id="modeTitle" style="display:none">文法</span>
-    <div class="sb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input id="search" placeholder="搜尋文法・單字..." oninput="onSearch(this.value)"></div>
+    <button class="menu-btn" onclick="toggleSd()" data-i18n-aria="menu" aria-label="選單"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    <h1 data-i18n="site_name">日本再留計劃</h1><span id="modeTitle" style="display:none">文法</span>
+    <div class="sb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input id="search" data-i18n-ph="search_ph" placeholder="搜尋文法・單字..." oninput="onSearch(this.value)"></div>
     <span class="stats" id="stats"></span>
-    <a href="home.html" style="color:var(--tx3);font-size:11px;text-decoration:none;white-space:nowrap;padding:4px 8px;border-radius:8px;transition:color .2s,background .2s" onmouseover="this.style.color='var(--ac)';this.style.background='var(--bg3)'" onmouseout="this.style.color='var(--tx3)';this.style.background='none'">關於</a>
+    <a href="home.html" style="color:var(--tx3);font-size:11px;text-decoration:none;white-space:nowrap;padding:4px 8px;border-radius:8px;transition:color .2s,background .2s" onmouseover="this.style.color='var(--ac)';this.style.background='var(--bg3)'" onmouseout="this.style.color='var(--tx3)';this.style.background='none'" data-i18n="about">關於</a>
     <button class="lang-btn" id="langBtn" onclick="cycleLang()">繁</button>
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" aria-label="切換深色模式"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg></button>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" data-i18n-aria="theme_toggle" aria-label="切換深色模式"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg></button>
     <div class="auth-area" id="authArea">
       <button class="auth-btn" id="authBtn" onclick="handleAuth()">登入</button>
     </div>
   </div>
   <div class="hd-bar" id="hdBar">
-    <button class="mode-pill on" onclick="switchMode('grammar')">文法</button>
-    <button class="mode-pill" onclick="switchMode('vocab')">單字</button>
-    <button class="mode-pill" onclick="switchMode('confuse')">比較</button>
+    <button class="mode-pill on" onclick="switchMode('grammar')" data-i18n="grammar">文法</button>
+    <button class="mode-pill" onclick="switchMode('vocab')" data-i18n="vocab">單字</button>
+    <button class="mode-pill" onclick="switchMode('confuse')" data-i18n="compare">比較</button>
     <div class="hd-sep"></div>
     <div id="tabsBar" style="display:contents"></div>
     <div class="hd-sep"></div>
@@ -911,24 +911,24 @@ body {
 </header>
 <!-- Bottom nav -->
 <nav class="ftb" id="ftb">
-  <button class="ftb-btn on" onclick="switchBottomTab(this)"><svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>學習</button>
-  <button class="ftb-btn" onclick="Quiz.start()"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>測驗</button>
-  <button class="ftb-btn" id="reviewBtn" onclick="SRS.start()"><svg viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>複習</button>
-  <button class="ftb-btn" onclick="Stats.open()"><svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>統計</button>
-  <button class="ftb-btn" onclick="openMoreMenu()"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>更多</button>
+  <button class="ftb-btn on" onclick="switchBottomTab(this)"><svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><span data-i18n="learn">學習</span></button>
+  <button class="ftb-btn" onclick="Quiz.start()"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg><span data-i18n="quiz">測驗</span></button>
+  <button class="ftb-btn" id="reviewBtn" onclick="SRS.start()"><svg viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg><span data-i18n="review">複習</span></button>
+  <button class="ftb-btn" onclick="Stats.open()"><svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg><span data-i18n="stats">統計</span></button>
+  <button class="ftb-btn" onclick="openMoreMenu()"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg><span data-i18n="more">更多</span></button>
 </nav>
 
 <!-- More menu (simple absolute popup, no drawer) -->
 <div id="moreMenu" style="display:none;position:fixed;bottom:60px;right:8px;background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:8px;z-index:250;box-shadow:0 4px 20px rgba(0,0,0,.12);min-width:140px">
-  <button class="more-item" onclick="closeMore();MockExam.start()">模擬考</button>
-  <button class="more-item" onclick="closeMore();GrammarDrill.start()">文法練習</button>
-  <button class="more-item" onclick="closeMore();Reading.start()">讀解練習</button>
-  <button class="more-item" onclick="closeMore();Listening.start()">聽力練習</button>
-  <a class="more-item" href="verbs.html">動詞變化</a>
-  <a class="more-item" href="contact.html">意見回饋</a>
+  <button class="more-item" onclick="closeMore();MockExam.start()" data-i18n="mock_exam">模擬考</button>
+  <button class="more-item" onclick="closeMore();GrammarDrill.start()" data-i18n="grammar_drill">文法練習</button>
+  <button class="more-item" onclick="closeMore();Reading.start()" data-i18n="reading_practice">讀解練習</button>
+  <button class="more-item" onclick="closeMore();Listening.start()" data-i18n="listening_practice">聽力練習</button>
+  <a class="more-item" href="verbs.html" data-i18n="verb_conjugation">動詞變化</a>
+  <a class="more-item" href="contact.html" data-i18n="feedback">意見回饋</a>
   <hr style="border:none;border-top:1px solid var(--bd);margin:4px 0">
-  <button class="more-item" onclick="closeMore();Stats.open();setTimeout(function(){Stats.switchTab('notebook')},50)">生詞本</button>
-  <button class="more-item" onclick="closeMore();Stats.open();setTimeout(function(){Stats.switchTab('history')},50)">考試紀錄</button>
+  <button class="more-item" onclick="closeMore();Stats.open();setTimeout(function(){Stats.switchTab('notebook')},50)" data-i18n="notebook">生詞本</button>
+  <button class="more-item" onclick="closeMore();Stats.open();setTimeout(function(){Stats.switchTab('history')},50)" data-i18n="exam_history">考試紀錄</button>
 </div>
 
 <nav class="sd" id="sd"></nav>
@@ -997,9 +997,9 @@ function handleAuth() {
 function updateAuthUI() {
   const area = document.getElementById('authArea');
   if (currentUser) {
-    area.innerHTML = `<span class="auth-btn" style="cursor:default"><img src="${currentUser.photoURL}" alt="">${currentUser.displayName.split(' ')[0]}</span><button class="logout-btn" onclick="handleAuth()">登出</button>`;
+    area.innerHTML = `<span class="auth-btn" style="cursor:default"><img src="${currentUser.photoURL}" alt="">${currentUser.displayName.split(' ')[0]}</span><button class="logout-btn" onclick="handleAuth()">${t('logout')}</button>`;
   } else {
-    area.innerHTML = '<button class="auth-btn" id="authBtn" onclick="handleAuth()">登入</button>';
+    area.innerHTML = `<button class="auth-btn" id="authBtn" onclick="handleAuth()">${t('login')}</button>`;
   }
 }
 
@@ -1598,7 +1598,7 @@ function renderVocab() {
   sd.innerHTML = sh;
 
   // Update footer
-  document.getElementById('ftInfo').textContent = `${currentLevel.toUpperCase()} 單字 ${data.length} 個收錄`;
+  document.getElementById('ftInfo').textContent = t('ft_vocab', { lv: currentLevel.toUpperCase(), n: data.length });
 }
 
 // ========== RENDER CONFUSABLES ==========
@@ -1639,7 +1639,7 @@ function renderConfuse() {
   let sh = '';
   filtered.slice(0, 60).forEach(cf => { sh += '<a href="#" onclick="event.preventDefault();closeSdMobile()">'+cf.title+'</a>'; });
   sd.innerHTML = sh;
-  document.getElementById('ftInfo').textContent = '易混淆詞比較 ' + data.length + ' 組收錄';
+  document.getElementById('ftInfo').textContent = t('ft_confuse', { n: data.length });
 }
 
 // ========== RENDER GRAMMAR ==========
@@ -1713,7 +1713,8 @@ function render() {
   mn.innerHTML = h;
   document.getElementById('stats').textContent = `${vc} / ${data.length}`;
   updateFavCount();
-  document.getElementById('ftInfo').textContent = `N5 ${N5.length} 項 ＋ N4 ${N4.length} 項 完整收錄`;
+  const grammarTotal = N5.length + N4.length + (typeof N3!=='undefined'?N3.length:0) + (typeof N2!=='undefined'?N2.length:0) + (typeof N1!=='undefined'?N1.length:0);
+  document.getElementById('ftInfo').textContent = t('ft_grammar', { total: grammarTotal });
 
   // Sidebar
   let sh = '';
@@ -1757,6 +1758,35 @@ if ('serviceWorker' in navigator) {
   }).catch(() => {});
 }
 
+// ========== I18N ==========
+const LANG_CYCLE = ['zh-TW', 'zh-Hans', 'en'];
+const LANG_LABEL = { 'zh-TW': '繁', 'zh-Hans': '简', 'en': 'EN' };
+
+function applyI18n() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    el.placeholder = t(el.dataset.i18nPh);
+  });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+    el.setAttribute('aria-label', t(el.dataset.i18nAria));
+  });
+  document.documentElement.lang = I18n.getLang();
+  const btn = document.getElementById('langBtn');
+  if (btn) btn.textContent = LANG_LABEL[I18n.getLang()] || '繁';
+}
+
+function cycleLang() {
+  const cur = I18n.getLang();
+  const idx = LANG_CYCLE.indexOf(cur);
+  const next = LANG_CYCLE[(idx + 1) % LANG_CYCLE.length];
+  I18n.setLang(next);
+  applyI18n();
+  updateAuthUI();
+  if (typeof doRender === 'function') doRender();
+}
+
 // ========== THEME ==========
 function initTheme() {
   const saved = localStorage.getItem('theme');
@@ -1783,6 +1813,7 @@ function updateThemeIcon() {
     : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>';
 }
 initTheme();
+applyI18n();
 
 // Init
 loadFavorites();

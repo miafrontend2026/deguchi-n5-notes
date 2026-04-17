@@ -257,7 +257,7 @@ const I18n = (() => {
   disclaimer: '本站內容為原創整理，不隸屬於 JLPT 官方或任何教育機構。',
   ft_vocab: '{lv} 單字 {n} 個收錄',
   ft_confuse: '易混淆詞比較 {n} 組收錄',
-  ft_grammar: 'N5 {a} 項 ＋ N4 {b} 項 完整收錄',
+  ft_grammar: 'N5～N1 共 {total} 個文法點',
 
   // Language
   lang_label: '繁',
@@ -480,7 +480,7 @@ const I18n = (() => {
   disclaimer: '本站内容为原创整理，不隶属于 JLPT 官方或任何教育机构。',
   ft_vocab: '{lv} 单词 {n} 个收录',
   ft_confuse: '易混淆词对比 {n} 组收录',
-  ft_grammar: 'N5 {a} 项 ＋ N4 {b} 项 完整收录',
+  ft_grammar: 'N5～N1 共 {total} 个语法点',
   lang_label: '简',
 },
 
@@ -701,7 +701,7 @@ const I18n = (() => {
   disclaimer: 'Original content. Not affiliated with JLPT or any educational institution.',
   ft_vocab: '{lv} Vocabulary: {n} words',
   ft_confuse: 'Confusable Pairs: {n} groups',
-  ft_grammar: 'N5 {a} + N4 {b} grammar points',
+  ft_grammar: 'N5–N1: {total} grammar points',
   lang_label: 'EN',
 }
   };
