@@ -115,7 +115,11 @@ const GrammarDrill = (() => {
           <div style="font-size:18px;font-weight:700;margin-bottom:8px">${g.t}</div>
           <div style="background:#FEF3C7;border-radius:7px;padding:8px 12px;font-size:14px;font-weight:600;color:#92400E;border-left:3px solid #D97706;margin:8px 0">${g.p}</div>
           <div style="font-size:13px;color:#334155;margin:8px 0;line-height:1.7">${g.ex}</div>
-          <div style="margin:8px 0;font-size:13px">${g.eg.map(e=>'<div style="padding:3px 0"><span style="color:#2563EB">'+e.j+'</span><br><span style="color:#64748B;font-size:12px">'+e.z+'</span></div>').join('')}</div>
+          <div style="margin:8px 0;font-size:13px">${g.eg.map(e=>{
+            const pureJ = e.j.replace(/<[^>]+>/g,'').replace(/'/g,"\\'");
+            const spk = `<svg class="spk-inline" style="width:16px;height:16px;cursor:pointer;vertical-align:middle;margin-left:4px;stroke:#2563EB;fill:none;stroke-width:2;opacity:.7" onclick="event.stopPropagation();speak('${pureJ}')" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>`;
+            return '<div style="padding:3px 0"><span style="color:#2563EB">'+e.j+'</span>'+spk+'<br><span style="color:#64748B;font-size:12px">'+e.z+'</span></div>';
+          }).join('')}</div>
           <div class="srs-btns">
             <button class="srs-btn srs-hard" onclick="event.stopPropagation();GrammarDrill.rate(false)">不熟</button>
             <button class="srs-btn srs-ok" onclick="event.stopPropagation();GrammarDrill.rate(true)">記得</button>
@@ -147,21 +151,44 @@ const GrammarDrill = (() => {
       <div class="qactions"><button class="qstart" onclick="GrammarDrill.begin()">再來一輪</button><button class="qclose" onclick="GrammarDrill.close()">返回</button></div>`;
   }
 
-  // ── Grammar Quiz Mode (multiple choice) ──
+  // ── Grammar Quiz Mode (fill-in-blank) ──
+  // 正確做法：給例句挖空，選項是 4 個「真的可以填空的日文表達」，不是文法點名稱。
+  // 正解取自當題文法例句的 <em>…</em>；誤答從同級別其他文法的 <em>…</em> 抽 3 個。
   let gqScore = 0, gqResults = [];
+  function extractEm(j) {
+    const m = j.match(/<em>(.*?)<\/em>/);
+    return m ? m[1] : null;
+  }
   function renderQuizQ() {
     const g = queue[cur];
+    const eg = g.eg && g.eg[0];
+    const answer = eg ? extractEm(eg.j) : null;
+    // Fallback：若無 <em> 標記，退回用文法名稱當答案（少見）
+    if (!answer) {
+      cur++;
+      if (cur >= queue.length) return showQuizResults();
+      return renderQuizQ();
+    }
     const allGrammar = getData(lvl);
-    const wrong = allGrammar.filter(x => x.id !== g.id).sort(() => Math.random() - 0.5).slice(0, 3);
-    const options = [g, ...wrong].sort(() => Math.random() - 0.5);
-    const correctIdx = options.indexOf(g);
-    // Show example sentence with grammar blanked out
-    const eg = g.eg[0];
+    // 蒐集同級別其他文法的 <em> 片段，當誤答候選
+    const distractPool = [];
+    allGrammar.forEach(x => {
+      if (x.id === g.id) return;
+      x.eg && x.eg.forEach(e => {
+        const s = extractEm(e.j);
+        if (s && s !== answer && !distractPool.includes(s)) distractPool.push(s);
+      });
+    });
+    const wrong = distractPool.sort(() => Math.random() - 0.5).slice(0, 3);
+    const options = [answer, ...wrong].sort(() => Math.random() - 0.5);
+    const correctIdx = options.indexOf(answer);
     const blanked = eg.j.replace(/<em>(.*?)<\/em>/, '＿＿＿＿');
+    const pureJ = blanked.replace(/<[^>]+>/g, '').replace(/'/g, "\\'");
+    const spk = `<svg class="spk-inline" style="width:18px;height:18px;cursor:pointer;vertical-align:middle;margin-left:6px;stroke:var(--ac2);fill:none;stroke-width:2" onclick="speak('${pureJ}')" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>`;
     document.getElementById('quizBox').innerHTML = `
       <div class="qhd"><span>文法測驗 ${cur+1} / ${queue.length}</span><span>正確: ${gqScore}</span><button class="qclose" style="width:auto;margin:0;padding:2px 10px" onclick="GrammarDrill.close()">✕</button></div>
-      <div class="qprompt"><div style="font-size:16px;line-height:1.8;color:var(--tx)">${blanked}</div><div style="font-size:12px;color:var(--tx2);margin-top:4px">${eg.z}</div></div>
-      <div class="qopts">${options.map((o, i) => '<button class="qopt" onclick="GrammarDrill.answerQuiz('+i+','+correctIdx+')">'+o.t+'</button>').join('')}</div>`;
+      <div class="qprompt"><div style="font-size:16px;line-height:1.8;color:var(--tx)">${blanked}${spk}</div><div style="font-size:12px;color:var(--tx2);margin-top:4px">${eg.z}</div></div>
+      <div class="qopts">${options.map((o, i) => '<button class="qopt" onclick="GrammarDrill.answerQuiz('+i+','+correctIdx+')">'+o+'</button>').join('')}</div>`;
   }
   function answerQuiz(idx, correctIdx) {
     const g = queue[cur];
