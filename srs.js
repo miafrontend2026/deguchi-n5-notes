@@ -108,13 +108,29 @@ const SRS = (() => {
 
   let queue = [], cur = 0, lvl = 'n5';
 
+  // 跨級別抓所有 due 單字，依 nextReviewTs 排序
+  function getAllDue() {
+    const d = getData(), now = Date.now(), out = [];
+    Object.entries(d).forEach(([key, e]) => {
+      if (!isDue(e, now)) return;
+      const ci = key.indexOf(':');
+      if (ci < 0) return;
+      out.push({ level: key.slice(0, ci), word: key.slice(ci + 1), ...e });
+    });
+    return out.sort((a, b) => (a.nextReviewTs || 0) - (b.nextReviewTs || 0));
+  }
+
   function start(level) {
     lvl = level || (typeof currentLevel !== 'undefined' ? currentLevel : 'n5');
-    const due = getDue(lvl);
+    // 複習跨級別：底部「複習(195)」是全級別計數，start 也要對齊
+    const allDue = getAllDue();
     const nw = getNew(lvl, 10);
     queue = [];
-    due.forEach(x => { const v = getVocabData(lvl).find(w => w.w === x.word); if (v) queue.push({ ...v, isNew: false }); });
-    nw.forEach(v => queue.push({ ...v, isNew: true }));
+    allDue.forEach(x => {
+      const v = getVocabData(x.level).find(w => w.w === x.word);
+      if (v) queue.push({ ...v, level: x.level, isNew: false });
+    });
+    nw.forEach(v => queue.push({ ...v, level: lvl, isNew: true }));
     if (!queue.length) { alert(t('srs_no_review')); return; }
     cur = 0;
     renderCard();
@@ -122,9 +138,11 @@ const SRS = (() => {
   }
 
   function renderCard() {
-    const item = queue[cur], st = getStats(lvl);
+    const item = queue[cur];
+    const itemLv = item.level || lvl;
+    const st = getStats(itemLv);
     document.getElementById('quizBox').innerHTML = `
-      <div class="qhd"><span>${t('review')} ${cur+1} / ${queue.length}</span><span>${item.isNew?t('srs_new'):t('srs_review')}</span><button class="qclose" style="width:auto;margin:0;padding:2px 10px" onclick="SRS.close()">✕</button></div>
+      <div class="qhd"><span>${t('review')} ${cur+1} / ${queue.length}</span><span>${itemLv.toUpperCase()}・${item.isNew?t('srs_new'):t('srs_review')}</span><button class="qclose" style="width:auto;margin:0;padding:2px 10px" onclick="SRS.close()">✕</button></div>
       <div class="srs-card" id="srsCard" onclick="SRS.flip()">
         <div class="srs-front" id="srsFront">
           <div class="qmain">${item.w}</div>
@@ -152,7 +170,7 @@ const SRS = (() => {
 
   function rate(correct) {
     const item = queue[cur];
-    record(lvl, item.w, correct);
+    record(item.level || lvl, item.w, correct);
     if (typeof Calendar !== 'undefined') Calendar.logActivity('vocab');
     cur++;
     if (cur >= queue.length) showDone(); else renderCard();
