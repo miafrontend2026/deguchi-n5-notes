@@ -7,9 +7,19 @@ const FlashCard = (() => {
   const LEVELS = ['n5','n4','n3','n2','n1'];
   const COUNTDOWN_SEC = 20;
 
+  // 每個評分對應的複習間隔
+  const GRADE_INTERVAL = {
+    known: { days: 7,   ms: 7 * 86400 * 1000, label: '一週後' },
+    soso:  { days: 0,   ms: 60 * 60 * 1000,   label: '1 小時後' },
+    unknown: { days: 0, ms: 10 * 60 * 1000,   label: '10 分鐘後' }
+  };
+  const MAX_REAPPEAR = 2;         // 同一張卡本輪最多重現次數
+  const REQUEUE_OFFSET = { soso: 5, unknown: 2 };
+
   let queue = [];
   let cur = 0;
-  let score = { known: 0, unknown: 0 };
+  let score = { known: 0, soso: 0, unknown: 0 };
+  let reappearCount = {};   // word -> times reappeared
   let level = 'n5';
   let timerId = null;
   let timeLeft = COUNTDOWN_SEC;
@@ -43,6 +53,13 @@ const FlashCard = (() => {
     if (gi < 0) return [];
     const bi = base === 'none' || !base ? -1 : LEVELS.indexOf(base);
     return LEVELS.slice(bi + 1, gi + 1);
+  }
+  // 真正「學會」= 至少一次標為「記得」。碰過但只打不熟/不會不算
+  function countLearned(srs, lv) {
+    const pf = lv + ':';
+    let n = 0;
+    for (const k in srs) if (k.startsWith(pf) && (srs[k].correct || 0) > 0) n++;
+    return n;
   }
   function daysUntilExam() {
     const d = getExamDate();
@@ -116,10 +133,10 @@ const FlashCard = (() => {
     const today = new Date().toISOString().split('T')[0];
 
     let html = '';
-    // 本輪級別的進度
+    // 本輪級別的進度（已學 = 至少一次記得）
     if (data && data.length) {
       const pf = lv + ':';
-      const learned = Object.keys(srs).filter(k => k.startsWith(pf)).length;
+      const learned = countLearned(srs, lv);
       const due = Object.keys(srs).filter(k => k.startsWith(pf) && srs[k].nextReview <= today).length;
       html += `<div><strong>${lv.toUpperCase()} 進度：</strong>${learned} / ${data.length}（已學 ${Math.round(learned/data.length*100)}%）${due>0?`　<span style="color:var(--ac)">・今日待複習 ${due}</span>`:''}</div>`;
     } else {
@@ -137,7 +154,7 @@ const FlashCard = (() => {
         const parts = scope.map(l => {
           const d = getData(l);
           const cnt = d ? d.length : 0;
-          const lrn = Object.keys(srs).filter(k => k.startsWith(l + ':')).length;
+          const lrn = countLearned(srs, l);
           totalTarget += cnt;
           totalLearned += lrn;
           return `${l.toUpperCase()} ${lrn}/${cnt}`;
@@ -268,7 +285,8 @@ const FlashCard = (() => {
     const srs = typeof SRS !== 'undefined' ? JSON.parse(localStorage.getItem('srs_data') || '{}') : {};
     const pf = level + ':';
     const today = new Date().toISOString().split('T')[0];
-    const learned = new Set(Object.keys(srs).filter(k => k.startsWith(pf)).map(k => k.slice(pf.length)));
+    // 「已學」= 至少一次記得；只打過不熟/不會的不算，新詞模式仍會出現
+    const learned = new Set(Object.keys(srs).filter(k => k.startsWith(pf) && (srs[k].correct || 0) > 0).map(k => k.slice(pf.length)));
     let pool;
     if (range === 'new') {
       pool = data.filter(d => !learned.has(d.w));
@@ -285,7 +303,8 @@ const FlashCard = (() => {
     }
     queue = [...pool].sort(() => Math.random() - 0.5).slice(0, Math.min(count, pool.length));
     cur = 0;
-    score = { known: 0, unknown: 0 };
+    score = { known: 0, soso: 0, unknown: 0 };
+    reappearCount = {};
     renderCard();
   }
 
@@ -298,7 +317,11 @@ const FlashCard = (() => {
     box.innerHTML = `
       <div class="qhd">
         <span>${cur+1} / ${queue.length}</span>
-        <span style="color:var(--ac);font-weight:600">✓${score.known} ✗${score.unknown}</span>
+        <span style="font-weight:600">
+          <span style="color:var(--correct-bd)">✓${score.known}</span>
+          <span style="color:var(--ac);margin-left:6px">◯${score.soso}</span>
+          <span style="color:var(--wrong-bd);margin-left:6px">✗${score.unknown}</span>
+        </span>
         <button class="qclose" style="width:auto;margin:0;padding:2px 10px" onclick="FlashCard.close()">✕</button>
       </div>
       <div class="fc-bar"><div class="fc-bar-fill" id="fcBarFill"></div></div>
@@ -312,10 +335,11 @@ const FlashCard = (() => {
           ${item.w!==item.r?`<div class="fc-reading">${item.r}</div>`:''}
           <div class="fc-meaning">${typeof cvt==='function'?cvt(item.m):item.m}</div>
           <div class="fc-btns">
-            <button class="fc-btn fc-no" onclick="event.stopPropagation();FlashCard.answer(false)">✗ 不會</button>
-            <button class="fc-btn fc-yes" onclick="event.stopPropagation();FlashCard.answer(true)">✓ 會</button>
+            <button class="fc-btn fc-no" onclick="event.stopPropagation();FlashCard.answer('unknown')">✗ 不會<span class="fc-btn-hint">10 分後再見</span></button>
+            <button class="fc-btn fc-soso" onclick="event.stopPropagation();FlashCard.answer('soso')">◯ 不熟<span class="fc-btn-hint">1 小時後</span></button>
+            <button class="fc-btn fc-yes" onclick="event.stopPropagation();FlashCard.answer('known')">✓ 記得<span class="fc-btn-hint">一週後</span></button>
           </div>
-          <div class="fc-hint">手機可左滑（不會）／右滑（會）</div>
+          <div class="fc-hint">手機可左滑（不會）／右滑（記得）</div>
         </div>
       </div>
       <div style="display:flex;justify-content:center;margin-top:10px">
@@ -354,12 +378,55 @@ const FlashCard = (() => {
     if (back) back.style.display = '';
   }
 
-  function answer(known) {
+  // 寫入 SRS，依 grade 設定下次複習間隔
+  function applyGrade(lv, word, grade) {
+    const KEY = 'srs_data';
+    let data = {};
+    try { data = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e) {}
+    const k = lv + ':' + word;
+    const todayStr = new Date().toISOString().split('T')[0];
+    const e = data[k] || { interval: 0, ease: 2.5, nextReview: todayStr, reviews: 0, correct: 0 };
+    e.reviews = (e.reviews || 0) + 1;
+    e.lastReview = todayStr;
+    const now = Date.now();
+    const spec = GRADE_INTERVAL[grade];
+    if (grade === 'known') {
+      e.correct = (e.correct || 0) + 1;
+      e.interval = spec.days;
+      e.ease = Math.min(3, (e.ease || 2.5) + 0.1);
+    } else {
+      e.interval = 0;
+      e.ease = Math.max(1.3, (e.ease || 2.5) - (grade === 'unknown' ? 0.2 : 0.1));
+    }
+    const nextTs = now + spec.ms;
+    e.nextReviewTs = nextTs;
+    e.nextReview = new Date(nextTs).toISOString().split('T')[0];
+    data[k] = e;
+    localStorage.setItem(KEY, JSON.stringify(data));
+    if (typeof saveSRSCloud === 'function') saveSRSCloud();
+  }
+
+  function answer(grade) {
+    // 相容：舊呼叫 answer(true/false)
+    if (grade === true) grade = 'known';
+    else if (grade === false) grade = 'unknown';
+    if (!GRADE_INTERVAL[grade]) grade = 'unknown';
     const item = queue[cur];
-    if (known) score.known++; else score.unknown++;
-    // 記 SRS
-    if (typeof SRS !== 'undefined' && SRS.record) SRS.record(level, item.w, known);
+    score[grade]++;
+    applyGrade(level, item.w, grade);
     if (typeof Calendar !== 'undefined') Calendar.logActivity('vocab');
+
+    // 本輪內重現（不熟/不會）
+    if (grade !== 'known') {
+      const tries = reappearCount[item.w] || 0;
+      if (tries < MAX_REAPPEAR) {
+        const offset = REQUEUE_OFFSET[grade] || 3;
+        const insertAt = Math.min(queue.length, cur + 1 + offset);
+        queue.splice(insertAt, 0, item);
+        reappearCount[item.w] = tries + 1;
+      }
+    }
+
     cur++;
     clearInterval(timerId);
     setTimeout(renderCard, 120);
@@ -373,18 +440,18 @@ const FlashCard = (() => {
       touchStartY = e.touches[0].clientY;
     }, { passive: true });
     card.addEventListener('touchend', e => {
-      if (!flipped) return; // 沒翻面時不接受滑動
+      if (!flipped) return;
       const dx = e.changedTouches[0].clientX - touchStartX;
       const dy = e.changedTouches[0].clientY - touchStartY;
       if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
-        answer(dx > 0); // 右滑 = 會，左滑 = 不會
+        answer(dx > 0 ? 'known' : 'unknown');
       }
     }, { passive: true });
   }
 
   function showResults() {
     clearInterval(timerId);
-    const total = score.known + score.unknown;
+    const total = score.known + score.soso + score.unknown;
     const pct = total ? Math.round(score.known / total * 100) : 0;
     const days = daysUntilExam();
     const srs = JSON.parse(localStorage.getItem('srs_data') || '{}');
@@ -392,8 +459,7 @@ const FlashCard = (() => {
 
     // 本級進度
     const data = getData(level);
-    const pf = level + ':';
-    const lvLearned = Object.keys(srs).filter(k => k.startsWith(pf)).length;
+    const lvLearned = countLearned(srs, level);
     const lvTotal = data.length;
 
     // 目標累計
@@ -406,7 +472,7 @@ const FlashCard = (() => {
         scope.forEach(l => {
           const d = getData(l);
           totalTarget += d ? d.length : 0;
-          totalLearned += Object.keys(srs).filter(k => k.startsWith(l + ':')).length;
+          totalLearned += countLearned(srs, l);
         });
         scopeRemaining = totalTarget - totalLearned;
         const baseLabel = (!base || base === 'none') ? '零基礎' : base.toUpperCase();
@@ -417,10 +483,19 @@ const FlashCard = (() => {
       ? Math.ceil(scopeRemaining / days)
       : (days && days > 0 && lvTotal - lvLearned > 0 ? Math.ceil((lvTotal - lvLearned) / days) : null);
 
+    // 本輪評分明細 + 下次複習時間
+    const breakdown = [];
+    if (score.known) breakdown.push(`<div><span style="color:var(--correct-bd);font-weight:600">✓ 記得 ${score.known} 個</span>　<span style="color:var(--tx2)">${GRADE_INTERVAL.known.label}再複習</span></div>`);
+    if (score.soso) breakdown.push(`<div><span style="color:var(--ac);font-weight:600">◯ 不熟 ${score.soso} 個</span>　<span style="color:var(--tx2)">${GRADE_INTERVAL.soso.label}再複習</span></div>`);
+    if (score.unknown) breakdown.push(`<div><span style="color:var(--wrong-bd);font-weight:600">✗ 不會 ${score.unknown} 個</span>　<span style="color:var(--tx2)">${GRADE_INTERVAL.unknown.label}再複習</span></div>`);
+
     document.getElementById('quizBox').innerHTML = `
       <h3>本輪結束</h3>
       <div class="qscore ${pct>=80?'good':pct>=60?'ok':'bad'}">${score.known} / ${total}（${pct}%）</div>
-      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:10px;padding:14px;margin:14px 0;font-size:13px;line-height:1.9;color:var(--tx)">
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;margin:10px 0;font-size:13px;line-height:1.9;color:var(--tx)">
+        ${breakdown.join('') || '<div style="color:var(--tx2)">（尚未作答）</div>'}
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:10px;padding:14px;margin:10px 0 14px;font-size:13px;line-height:1.9;color:var(--tx)">
         <div><strong>${level.toUpperCase()} 進度：</strong>${lvLearned} / ${lvTotal}（已學 ${Math.round(lvLearned/lvTotal*100)}%）</div>
         ${scopeHtml}
         ${days !== null ? `<div><strong>考試倒數：</strong>${days >= 0 ? days + ' 天' : '已過 ' + (-days) + ' 天'}</div>` : ''}

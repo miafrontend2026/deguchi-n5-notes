@@ -832,16 +832,19 @@ body {
 .fc-reading { font-size: 18px; color: var(--ac2); margin-bottom: 12px; }
 .fc-meaning { font-size: 22px; color: var(--ac); font-weight: 600; margin: 12px 0 18px; }
 .fc-hint { font-size: 11px; color: var(--tx3); margin-top: 10px; }
-.fc-btns { display: flex; gap: 12px; justify-content: center; margin-top: 6px; }
+.fc-btns { display: flex; gap: 8px; justify-content: center; margin-top: 6px; flex-wrap: wrap; }
 .fc-btn {
-  padding: 12px 28px; border: none; border-radius: 10px;
-  font-size: 15px; font-weight: 700; cursor: pointer;
+  padding: 12px 18px; border: none; border-radius: 10px;
+  font-size: 14px; font-weight: 700; cursor: pointer;
   transition: transform .1s;
   -webkit-tap-highlight-color: transparent;
+  flex: 1; min-width: 90px;
 }
 .fc-btn:active { transform: scale(.95); }
 .fc-no { background: var(--wrong-bg); color: var(--wrong-tx); }
+.fc-soso { background: var(--ok-bg); color: var(--ok-tx); }
 .fc-yes { background: var(--correct-bg); color: var(--correct-tx); }
+.fc-btn-hint { font-size: 10px; display: block; font-weight: 400; opacity: .7; margin-top: 2px; }
 
 /* == Confusables == */
 .cf-card {
