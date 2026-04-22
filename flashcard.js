@@ -211,7 +211,7 @@ const FlashCard = (() => {
       `<option value="" ${!goal?'selected':''}>未設定</option>`,
       ...LEVELS.map(l => `<option value="${l}" ${goal===l?'selected':''}>${l.toUpperCase()}</option>`)
     ].join('');
-    const selStyle = 'padding:8px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font-family:inherit;font-size:14px;width:100%;cursor:pointer';
+    const selStyle = 'width:100%';
     box.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
         <h3 style="margin:0">⚡ 快速背單字</h3>

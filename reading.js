@@ -1,6 +1,7 @@
 // ========== READING PRACTICE ==========
 const Reading = (() => {
   const SCORE_KEY = 'reading_scores';
+  const DONE_KEY = 'reading_done';   // { n5: ['id1','id2', ...], ... }
   let currentPassage = null;
   let currentQ = 0;
   let score = 0;
@@ -10,6 +11,7 @@ const Reading = (() => {
   let timerEnabled = true;
   let furiganaVisible = true;
   let selectedLevel = 'n5';
+  let readMode = 'new'; // 'new'（沒讀過）| 'review'（讀過複習）| 'all'（全部）
 
   // ── passage bank ──
   const passages = [
@@ -495,6 +497,17 @@ const Reading = (() => {
   // ── helpers ──
   function getScores() { try { return JSON.parse(localStorage.getItem(SCORE_KEY)) || {}; } catch(e) { return {}; } }
   function saveScores(d) { localStorage.setItem(SCORE_KEY, JSON.stringify(d)); }
+  function getDone() { try { return JSON.parse(localStorage.getItem(DONE_KEY)) || {}; } catch(e) { return {}; } }
+  function saveDone(d) {
+    localStorage.setItem(DONE_KEY, JSON.stringify(d));
+    if (typeof saveAllCloud === 'function') saveAllCloud();
+  }
+  function markDone(lv, id) {
+    const d = getDone();
+    if (!d[lv]) d[lv] = [];
+    if (!d[lv].includes(id)) { d[lv].push(id); saveDone(d); }
+  }
+  function doneList(lv) { return getDone()[lv] || []; }
 
   function formatTime(s) {
     const m = Math.floor(s / 60);
@@ -506,11 +519,14 @@ const Reading = (() => {
   function start() {
     const box = document.getElementById('quizBox');
     const scores = getScores();
+    const done = getDone();
     const levelStats = ['n5','n4','n3','n2','n1'].map(lv => {
       const s = scores[lv] || { correct: 0, total: 0 };
       const pct = s.total ? Math.round(s.correct / s.total * 100) : 0;
-      return `<span style="font-size:11px;color:var(--tx2)">${lv.toUpperCase()}: ${s.correct}/${s.total} (${pct}%)</span>`;
-    }).join(' ');
+      const total = passages.filter(p => p.level === lv).length;
+      const dn = (done[lv] || []).length;
+      return `<span style="font-size:11px;color:var(--tx2)">${lv.toUpperCase()}: 讀過 ${dn}/${total}・分數 ${s.correct}/${s.total} (${pct}%)</span>`;
+    }).join('<br>');
 
     box.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
@@ -523,10 +539,15 @@ const Reading = (() => {
         <button data-v="n3">N3</button><button data-v="n2">N2</button>
         <button data-v="n1">N1</button>
       </div></div>
+      <div class="qf"><label>模式</label><div class="qo" id="rdMode">
+        <button class="${readMode==='new'?'on':''}" data-v="new">新題（沒讀過）</button>
+        <button class="${readMode==='review'?'on':''}" data-v="review">複習（讀過的）</button>
+        <button class="${readMode==='all'?'on':''}" data-v="all">全部</button>
+      </div></div>
       <div class="qf"><label>${t('rd_timer')}</label><div class="qo" id="rdTimer">
         <button class="on" data-v="1">${t('rd_timer_on')}</button><button data-v="0">${t('rd_timer_off')}</button>
       </div></div>
-      <div style="margin:10px 0;display:flex;flex-wrap:wrap;gap:4px">${levelStats}</div>
+      <div style="margin:10px 0;line-height:1.8">${levelStats}</div>
       <button class="qstart" onclick="Reading.begin()">${t('rd_start')}</button>
       <button class="qclose" onclick="Reading.close()">${t('rd_cancel')}</button>`;
     box.querySelectorAll('.qo').forEach(g => {
@@ -537,28 +558,49 @@ const Reading = (() => {
     document.getElementById('quizBg').classList.add('show');
   }
 
-  // 追蹤各級別最近讀過的 passage id，避免連續抽到同一篇
+  // 追蹤本 session 內最近讀過的 passage id，避免連續抽到同一篇
   const recentIds = {}; // { n5: [...], n4: [...], ... }
   function begin() {
     const lvEl = document.querySelector('#rdLevel .on');
     const tmEl = document.querySelector('#rdTimer .on');
+    const mdEl = document.querySelector('#rdMode .on');
     if (lvEl) selectedLevel = lvEl.dataset.v;
     if (tmEl) timerEnabled = tmEl.dataset.v === '1';
+    if (mdEl) readMode = mdEl.dataset.v;
     const pool = passages.filter(p => p.level === selectedLevel);
     if (!pool.length) { alert(t('rd_no_data')); return; }
-    if (!recentIds[selectedLevel]) recentIds[selectedLevel] = [];
-    const recent = recentIds[selectedLevel];
-    // 排除最近讀過的；若全部讀過則重置（輪完一遍重新開始）
-    let candidates = pool.filter(p => !recent.includes(p.id));
-    if (!candidates.length) {
-      recent.length = 0;
+    const done = doneList(selectedLevel);
+
+    // 依模式選池
+    let candidates;
+    if (readMode === 'new') {
+      candidates = pool.filter(p => !done.includes(p.id));
+      if (!candidates.length) {
+        if (confirm(`${selectedLevel.toUpperCase()} 全部 ${pool.length} 篇都讀過了。要切換到「複習」模式重讀嗎？`)) {
+          readMode = 'review';
+          candidates = pool.filter(p => done.includes(p.id));
+        } else { start(); return; }
+      }
+    } else if (readMode === 'review') {
+      candidates = pool.filter(p => done.includes(p.id));
+      if (!candidates.length) {
+        alert(`${selectedLevel.toUpperCase()} 還沒讀過任何一篇，請先用「新題」模式。`);
+        start(); return;
+      }
+    } else {
       candidates = pool;
     }
-    currentPassage = candidates[Math.floor(Math.random() * candidates.length)];
+
+    // 避免本 session 內連續抽到同一篇
+    if (!recentIds[selectedLevel]) recentIds[selectedLevel] = [];
+    const recent = recentIds[selectedLevel];
+    let picks = candidates.filter(p => !recent.includes(p.id));
+    if (!picks.length) { recent.length = 0; picks = candidates; }
+    currentPassage = picks[Math.floor(Math.random() * picks.length)];
     recent.push(currentPassage.id);
-    // 保留最多 pool 一半的長度，讓遠古的可以重出
-    const keep = Math.max(1, Math.floor(pool.length / 2));
+    const keep = Math.max(1, Math.floor(candidates.length / 2));
     while (recent.length > keep) recent.shift();
+
     currentQ = 0;
     score = 0;
     answered = [];
@@ -664,12 +706,13 @@ const Reading = (() => {
     const total = p.questions.length;
     const pct = Math.round(score / total * 100);
 
-    // Save scores
+    // Save scores + 標記已讀
     const scores = getScores();
     if (!scores[selectedLevel]) scores[selectedLevel] = { correct: 0, total: 0 };
     scores[selectedLevel].correct += score;
     scores[selectedLevel].total += total;
     saveScores(scores);
+    markDone(selectedLevel, p.id);
 
     const cls = pct >= 80 ? 'good' : pct >= 50 ? 'ok' : 'bad';
     const box = document.getElementById('quizBox');

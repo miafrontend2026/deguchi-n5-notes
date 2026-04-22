@@ -115,8 +115,14 @@ body {
   position: fixed; top: 0; left: 0; right: 0;
   background: var(--bg); z-index: 100;
   border-bottom: 1px solid var(--bd);
-  backdrop-filter: saturate(180%) blur(12px);
-  -webkit-backdrop-filter: saturate(180%) blur(12px);
+}
+/* 只有內容從下方滾入時才開 blur，深色模式下的 saturate 會整塊變白 */
+@supports (backdrop-filter: blur(10px)) {
+  [data-theme="light"] .hd {
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+  }
 }
 .hd-top {
   display: flex; align-items: center;
@@ -311,6 +317,28 @@ body {
 /* 全站隱藏滾動條（保留滾動功能） */
 * { scrollbar-width: none; -ms-overflow-style: none; }
 *::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
+/* 全站 <select> 去系統預設，配主題的自訂下拉 */
+select {
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  background-color: var(--bg2);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%23888' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><polyline points='1 1.5 6 6.5 11 1.5'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding: 9px 34px 9px 12px;
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  color: var(--tx);
+  font-family: inherit; font-size: 14px;
+  cursor: pointer; outline: none;
+  transition: border-color .15s var(--ease), background-color .15s var(--ease);
+}
+select:hover { border-color: var(--ac2); }
+select:focus { border-color: var(--ac); }
+select::-ms-expand { display: none; }
+[data-theme="dark"] select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%23aaa' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><polyline points='1 1.5 6 6.5 11 1.5'/></svg>");
+}
 .sd .ct {
   padding: 10px 16px 6px; font-size: 10px; letter-spacing: 1.2px;
   color: var(--ac); font-weight: 700; cursor: pointer;
@@ -1240,7 +1268,7 @@ function saveSRSCloud() {
   db.collection('users').doc(currentUser.uid).set({ srs_data: d }, { merge: true });
 }
 // ── Sync ALL data ──
-const SYNC_KEYS = ['study_log','word_notebook','grammar_srs','daily_progress','mock_exam_history','exam_date','base_level','goal_level'];
+const SYNC_KEYS = ['study_log','word_notebook','grammar_srs','daily_progress','mock_exam_history','exam_date','base_level','goal_level','reading_done'];
 function saveAllCloud() {
   if (!currentUser || !db) return;
   const payload = {};
