@@ -59,6 +59,22 @@ async function fetchT(url, opts = {}, ms = 30000) {
 }
 
 export async function audioQuery(text) {
+  // 支援 kana 強制重音模式：override 寫成 "kana:ハ'ガキ" 之類，跳過 VOICEVOX 自動分析
+  if (text.startsWith('kana:')) {
+    const kana = text.slice(5);
+    const apUrl = `${ENGINE}/accent_phrases?text=${encodeURIComponent(kana)}&speaker=${SPEAKER}&is_kana=true`;
+    const apRes = await fetchT(apUrl, { method: 'POST' });
+    if (!apRes.ok) throw new Error(`accent_phrases ${apRes.status}: ${await apRes.text()}`);
+    const accent_phrases = await apRes.json();
+    return {
+      accent_phrases,
+      speedScale: 1.0, pitchScale: 0.0, intonationScale: 1.0, volumeScale: 1.0,
+      prePhonemeLength: 0.1, postPhonemeLength: 0.1,
+      pauseLength: null, pauseLengthScale: 1.0,
+      outputSamplingRate: 24000, outputStereo: false,
+      kana,
+    };
+  }
   const url = `${ENGINE}/audio_query?text=${encodeURIComponent(text)}&speaker=${SPEAKER}`;
   const res = await fetchT(url, { method: 'POST' });
   if (!res.ok) throw new Error(`audio_query ${res.status}: ${await res.text()}`);
