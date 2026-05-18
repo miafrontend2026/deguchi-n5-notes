@@ -1747,11 +1747,17 @@ const Shadow = (() => {
     if (item.w && item.lv) {
       let nb; try { nb = JSON.parse(localStorage.getItem('word_notebook')) || []; } catch(e) { nb = []; }
       const i = nb.findIndex(x => x.w === item.w && x.lv === item.lv);
-      if (i > -1) nb.splice(i, 1);
-      else nb.push({ w: item.w, r: item.j || item.w, m: item.m || '', lv: item.lv, added: new Date().toISOString() });
+      const added = i === -1;
+      if (added) nb.push({ w: item.w, r: item.j || item.w, m: item.m || '', lv: item.lv, added: new Date().toISOString() });
+      else nb.splice(i, 1);
       localStorage.setItem('word_notebook', JSON.stringify(nb));
       if (typeof saveAllCloud === 'function') saveAllCloud();
       updateFavBtn();
+      // 即時回寫單字列表 DOM 的 ★（不用刷新頁面）
+      try {
+        document.querySelectorAll(`.vi[data-w="${(CSS && CSS.escape) ? CSS.escape(item.w) : item.w}"] .star`).forEach(s => s.classList.toggle('on', added));
+      } catch(e) {}
+      if (typeof updateFavCount === 'function') updateFavCount();
       return;
     }
     // 文法例句：句子層級，沿用 shadow_favs
