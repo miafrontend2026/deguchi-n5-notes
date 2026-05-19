@@ -418,11 +418,157 @@ const Stats = (() => {
         </div>`;
       });
       h += '</div>';
+      h += `<div style="display:flex;gap:8px;margin-top:12px">
+        <button class="qstart" style="flex:1" onclick="Stats.quizWrongQuestions()">🔁 重考全部 (${arr.length})</button>
+      </div>`;
       h += `<div style="margin-top:10px;font-size:11px;color:var(--tx3)">提示：聽力/閱讀/模考非單字題答錯會自動加入這裡。單字答錯仍會進「生詞本」。</div>`;
     }
     h += '</div>';
     return h;
   }
 
-  return { open, close, switchTab, quizWeak, retryWrong, _answerWeak, addToNotebook, removeFromNotebook, quizNotebook, reviewNotebook, addWrongQuestion, getWrongQuestions, removeWrongQuestion };
+  // ── 錯題重考 ──
+  let _wq = null;  // {arr, cur, correct}
+  function quizWrongQuestions() {
+    const arr = getWrongQuestions().slice().sort(() => Math.random() - 0.5);
+    if (!arr.length) { alert('沒有錯題可考'); return; }
+    _wq = { arr, cur: 0, correct: 0 };
+    document.getElementById('quizBg').classList.add('show');
+    _renderWrongQ();
+  }
+  function _renderWrongQ() {
+    const w = _wq.arr[_wq.cur];
+    const modeLbl = { listening: '🎧 聽力', reading: '📖 閱讀', mock: '📝 模考' };
+    document.getElementById('quizBox').innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <span style="font-size:12px;color:var(--tx2)">${modeLbl[w.mode]||w.mode} · ${(w.level||'').toUpperCase()} · ${_wq.cur+1}/${_wq.arr.length}</span>
+        <button class="qclose" style="width:auto;margin:0;padding:2px 10px" onclick="Stats.open()">✕</button>
+      </div>
+      ${w.text?`<div style="font-size:13px;color:var(--tx2);line-height:1.6;margin-bottom:10px;white-space:pre-wrap;max-height:180px;overflow:auto;background:var(--bg2);padding:10px;border-radius:8px">${w.text}</div>`:''}
+      <div style="font-size:15px;font-weight:600;margin:10px 0">${w.q||''}</div>
+      <div class="qopts" id="wqOpts">${(w.options||[]).map((o,i)=>`<button class="qopt" onclick="Stats._wqAnswer(${i})">${o}</button>`).join('')}</div>
+      <div id="wqNav" style="margin-top:12px"></div>`;
+  }
+  function _wqAnswer(i) {
+    const w = _wq.arr[_wq.cur];
+    const ok = i === w.correctIdx;
+    if (ok) _wq.correct++;
+    document.querySelectorAll('#wqOpts .qopt').forEach((b, idx) => {
+      b.disabled = true;
+      if (idx === w.correctIdx) b.classList.add('qcorrect');
+      if (idx === i && !ok) b.classList.add('qwrong');
+    });
+    const last = _wq.cur >= _wq.arr.length - 1;
+    const rmBtn = ok
+      ? `<button class="qclose" style="margin-right:8px" onclick="Stats._wqRemoveAndNext()">✓ 移出錯題本</button>`
+      : '';
+    document.getElementById('wqNav').innerHTML = rmBtn +
+      `<button class="qstart" onclick="Stats._wqNext()">${last?'看結果':'下一題'}</button>`;
+  }
+  function _wqRemoveAndNext() {
+    const w = _wq.arr[_wq.cur];
+    const cur = getWrongQuestions().filter(x => !(x.mode === w.mode && x.id === w.id));
+    saveWrongQuestions(cur);
+    _wqNext();
+  }
+  function _wqNext() {
+    if (_wq.cur >= _wq.arr.length - 1) {
+      const pct = Math.round(_wq.correct / _wq.arr.length * 100);
+      const col = pct >= 80 ? '#16a34a' : pct >= 60 ? '#ca8a04' : '#dc2626';
+      document.getElementById('quizBox').innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span style="font-size:14px;font-weight:600">錯題重考結果</span><button class="qclose" style="width:auto;margin:0;padding:2px 10px" onclick="Stats.open()">✕</button></div>
+        <div style="text-align:center;padding:24px 0"><div style="font-size:48px;font-weight:700;color:${col}">${pct}%</div><div style="color:var(--tx2);margin-top:4px">${_wq.correct} / ${_wq.arr.length}</div></div>
+        <div style="display:flex;gap:8px">
+          <button class="qstart" style="flex:1" onclick="Stats.quizWrongQuestions()">🔁 再考一次</button>
+          <button class="qclose" style="flex:1" onclick="Stats.open();Stats.switchTab('wrongq')">回錯題回顧</button>
+        </div>`;
+      return;
+    }
+    _wq.cur++;
+    _renderWrongQ();
+  }
+
+  // ── 收藏聽力測驗（shadow_favs 句 + word_notebook 單字） ──
+  let _fl = null;  // {items, pool, cur, correct}
+  function quizFavListening() {
+    const pool = [];
+    try {
+      const d = JSON.parse(localStorage.getItem('shadow_favs')) || {};
+      Object.values(d).forEach(f => { if (f && f.j) pool.push({ j: f.j, z: f.z || f.j }); });
+    } catch(e) {}
+    try {
+      const nb = JSON.parse(localStorage.getItem('word_notebook')) || [];
+      nb.forEach(x => {
+        if (!x || !x.w) return;
+        const j = x.r || x.w;
+        let z = '';
+        if (x.w !== j && x.m) z = x.w + ' · ' + x.m;
+        else if (x.w !== j) z = x.w;
+        else if (x.m) z = x.m;
+        else z = j;
+        pool.push({ j, z });
+      });
+    } catch(e) {}
+    if (pool.length < 4) { alert('收藏少於 4 個，沒法出聽力題。先去單字或跟讀加幾個再來。'); return; }
+    const items = pool.slice().sort(() => Math.random() - 0.5).slice(0, 20);
+    _fl = { items, pool, cur: 0, correct: 0 };
+    document.getElementById('quizBg').classList.add('show');
+    _renderFL();
+  }
+  function _renderFL() {
+    const item = _fl.items[_fl.cur];
+    const others = _fl.pool.filter(p => p.j !== item.j && p.z && p.z !== item.z);
+    const distractors = others.slice().sort(() => Math.random() - 0.5).slice(0, 3);
+    const opts = [item, ...distractors].sort(() => Math.random() - 0.5);
+    const correctIdx = opts.indexOf(item);
+    _fl._opts = opts; _fl._correctIdx = correctIdx;
+    document.getElementById('quizBox').innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <span style="font-size:12px;color:var(--tx2)">🎧 收藏聽力 ${_fl.cur+1}/${_fl.items.length}</span>
+        <button class="qclose" style="width:auto;margin:0;padding:2px 10px" onclick="Stats.close()">✕</button>
+      </div>
+      <div style="text-align:center;margin:24px 0">
+        <button class="qstart" style="border-radius:50%;width:88px;height:88px;font-size:32px;padding:0;cursor:pointer" onclick="Stats._flReplay()">🔊</button>
+        <div style="font-size:11px;color:var(--tx3);margin-top:8px">點擊重播</div>
+      </div>
+      <div class="qopts" id="flOpts">${opts.map((o,i)=>`<button class="qopt" onclick="Stats._flAnswer(${i})">${o.z}</button>`).join('')}</div>
+      <div id="flNav" style="margin-top:12px"></div>`;
+    setTimeout(() => { if (typeof speak === 'function') speak(item.j); }, 250);
+  }
+  function _flReplay() {
+    const item = _fl.items[_fl.cur];
+    if (typeof speak === 'function') speak(item.j);
+  }
+  function _flAnswer(i) {
+    const ok = i === _fl._correctIdx;
+    if (ok) _fl.correct++;
+    document.querySelectorAll('#flOpts .qopt').forEach((b, idx) => {
+      b.disabled = true;
+      if (idx === _fl._correctIdx) b.classList.add('qcorrect');
+      if (idx === i && !ok) b.classList.add('qwrong');
+    });
+    const item = _fl.items[_fl.cur];
+    const last = _fl.cur >= _fl.items.length - 1;
+    document.getElementById('flNav').innerHTML = `
+      <div style="color:var(--tx2);font-size:13px;margin-bottom:8px;padding:8px;background:var(--bg2);border-radius:6px">原文：<b style="color:var(--tx)">${item.j}</b>　・　${item.z}</div>
+      <button class="qstart" style="width:100%" onclick="Stats._flNext()">${last?'看結果':'下一題'}</button>`;
+  }
+  function _flNext() {
+    if (_fl.cur >= _fl.items.length - 1) {
+      const pct = Math.round(_fl.correct / _fl.items.length * 100);
+      const col = pct >= 80 ? '#16a34a' : pct >= 60 ? '#ca8a04' : '#dc2626';
+      document.getElementById('quizBox').innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span style="font-size:14px;font-weight:600">收藏聽力測驗結果</span><button class="qclose" style="width:auto;margin:0;padding:2px 10px" onclick="Stats.close()">✕</button></div>
+        <div style="text-align:center;padding:24px 0"><div style="font-size:48px;font-weight:700;color:${col}">${pct}%</div><div style="color:var(--tx2);margin-top:4px">${_fl.correct} / ${_fl.items.length}</div></div>
+        <div style="display:flex;gap:8px">
+          <button class="qstart" style="flex:1" onclick="Stats.quizFavListening()">🔁 再考一次</button>
+          <button class="qclose" style="flex:1" onclick="Stats.close()">關閉</button>
+        </div>`;
+      return;
+    }
+    _fl.cur++;
+    _renderFL();
+  }
+
+  return { open, close, switchTab, quizWeak, retryWrong, _answerWeak, addToNotebook, removeFromNotebook, quizNotebook, reviewNotebook, addWrongQuestion, getWrongQuestions, removeWrongQuestion, quizWrongQuestions, _wqAnswer, _wqNext, _wqRemoveAndNext, quizFavListening, _flReplay, _flAnswer, _flNext };
 })();
