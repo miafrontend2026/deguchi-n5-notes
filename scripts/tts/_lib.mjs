@@ -45,7 +45,14 @@ export function loadOverrides() {
 
 export function applyOverrides(text, overrides) {
   let out = text;
-  for (const [k, v] of overrides) out = out.split(k).join(v);
+  for (const [k, v] of overrides) {
+    if (k.startsWith('==')) {
+      // exact-match override：避免 1~2 字 key 把句子裡的相同 substring 也誤改（例如 は 助詞）
+      if (out === k.slice(2)) return v;
+      continue;
+    }
+    out = out.split(k).join(v);
+  }
   return out;
 }
 

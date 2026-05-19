@@ -1,5 +1,5 @@
 {
-  "_comment": "Reading overrides applied to text BEFORE sending to VOICEVOX. Add entries when VOICEVOX mispronounces a word — value should be the correct kana. Use value \"__SKIP__\" to skip pre-rendered audio (falls back to browser TTS). Use prefix \"kana:\" to force explicit pitch accent via is_kana=true (e.g. \"kana:ハ'ガキ\" — ' marks the pitch-drop position).",
+  "_comment": "Reading overrides applied to text BEFORE sending to VOICEVOX. Add entries when VOICEVOX mispronounces a word — value should be the correct kana. Use value \"__SKIP__\" to skip pre-rendered audio (falls back to browser TTS). Use prefix \"kana:\" to force explicit pitch accent via is_kana=true (e.g. \"kana:ハ'ガキ\" — ' marks the pitch-drop position). Use key prefix \"==\" for exact-match only (e.g. \"==は\" only fires when the whole text is exactly 「は」, won't break sentences containing は as a particle).",
   "洗濯物": "せんたくもの",
   "習って": "ならって",
   "飲みませんか": "のみませんか",
@@ -37,5 +37,6 @@
   "または": "マタハ",
   "はがき": "kana:ハ'ガキ",
   "はこ": "kana:ハ'コ",
-  "はく": "kana:ハ'ク"
+  "はく": "kana:ハ'ク",
+  "==は": "kana:ハ'"
 }
